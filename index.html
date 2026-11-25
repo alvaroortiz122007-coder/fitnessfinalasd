@@ -1,0 +1,3080 @@
+<!DOCTYPE html>
+<html lang="es" class="scroll-smooth">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>30 Días con Álex · Método 30D | Movilidad, Fuerza y Hábitos en Casa</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- SDK Oficial de Supabase -->
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@700;800;900&display=swap" rel="stylesheet" />
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ['Inter', 'sans-serif'],
+            display: ['"Plus Jakarta Sans"', 'sans-serif'],
+          },
+          colors: {
+            brand: {
+              orange: '#F97316',
+              orangeDark: '#EA580C',
+              navy: '#0F172A',
+              navyLight: '#1E293B',
+              surface: '#F8FAFC',
+            }
+          }
+        }
+      }
+    }
+  </script>
+  <style>
+    body {
+      background-color: #F8FAFC;
+      color: #0F172A;
+      overflow-x: hidden;
+    }
+    .glass-header {
+      background: rgba(248, 250, 252, 0.9);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+    }
+    .dot-pattern {
+      background-image: radial-gradient(#CBD5E1 1px, transparent 1px);
+      background-size: 20px 20px;
+    }
+
+    @keyframes animPulseBadge {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0.45; }
+    }
+    .live-dot { animation: animPulseBadge 1.6s ease-in-out infinite; }
+
+    ::-webkit-scrollbar { width: 7px; height: 7px; }
+    ::-webkit-scrollbar-track { background: #F1F5F9; }
+    ::-webkit-scrollbar-thumb { background: #CBD5E1; border-radius: 9999px; }
+    ::-webkit-scrollbar-thumb:hover { background: #94A3B8; }
+  </style>
+</head>
+<body class="antialiased selection:bg-orange-500 selection:text-white">
+
+  <!-- CONTENEDOR DE NOTIFICACIONES FLOTANTES -->
+  <div id="toastStack" class="fixed bottom-4 right-4 z-50 flex flex-col gap-2 max-w-xs w-full px-4 sm:px-0 pointer-events-none"></div>
+
+  <!-- 1) BARRA DE NAVEGACIÓN SUPERIOR STICKY -->
+  <header class="sticky top-0 z-40 glass-header border-b border-slate-200/80">
+    <div class="max-w-6xl mx-auto px-4 sm:px-6 h-16 flex items-center justify-between gap-3">
+      <a href="#top" onclick="switchAppView('landing')" class="flex items-center gap-2.5 group shrink-0">
+        <svg class="w-9 h-9 shrink-0 transition-transform group-hover:scale-105" viewBox="0 0 40 40" fill="none">
+          <rect width="40" height="40" rx="12" fill="#0F172A"/>
+          <path d="M8 27C12 16 19 12 31 12" stroke="#F97316" stroke-width="3.5" stroke-linecap="round"/>
+          <circle cx="31" cy="12" r="3.5" fill="#F97316"/>
+          <text x="20" y="29" text-anchor="middle" fill="#FFFFFF" font-family="Plus Jakarta Sans, sans-serif" font-weight="900" font-size="13">30D</text>
+        </svg>
+        <div class="leading-tight">
+          <span class="font-display font-black text-brand-navy text-base sm:text-lg tracking-tight block">30 Días con Álex</span>
+          <span class="text-[11px] font-semibold text-slate-500 hidden sm:block">Método 30D · Movilidad y Fuerza</span>
+        </div>
+      </a>
+
+      <nav id="landingNavLinks" class="hidden md:flex items-center gap-6 text-sm font-semibold text-slate-600">
+        <a href="#como-funciona" class="hover:text-brand-navy transition">Cómo funciona</a>
+        <a href="#prueba-gratis" class="hover:text-brand-navy transition">Prueba Gratis 3 Días</a>
+        <a href="#temario" class="hover:text-brand-navy transition">Contenido</a>
+        <a href="#planes" class="hover:text-brand-navy transition">Planes</a>
+        <a href="#faq" class="hover:text-brand-navy transition">Dudas</a>
+      </nav>
+
+      <div class="flex items-center gap-2">
+        <button id="toggleViewBtn" onclick="toggleAppView()" class="px-4 py-2.5 rounded-xl bg-brand-navy hover:bg-brand-navyLight text-white font-display font-extrabold text-xs sm:text-sm shadow-sm transition flex items-center gap-2 cursor-pointer">
+          <span id="sessionIndicatorDot" class="w-2 h-2 rounded-full bg-brand-orange"></span>
+          <span id="toggleViewBtnText">Área de Alumno</span>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- 2) VISTA PÚBLICA: LANDING PAGE DE VENTAS -->
+  <main id="landingView">
+
+    <!-- HERO SECTION -->
+    <section id="top" class="dot-pattern pt-8 pb-14 sm:pt-14 sm:pb-20 border-b border-slate-200/80">
+      <div class="max-w-6xl mx-auto px-4 sm:px-6 grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-10 items-center">
+        <div class="lg:col-span-7">
+          <div class="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-brand-navy text-white text-[11px] sm:text-xs font-display font-extrabold tracking-wide mb-5 shadow-sm">
+            <span class="w-2 h-2 rounded-full bg-brand-orange"></span>
+            <span>SIN GIMNASIO · 10–15 MIN AL DÍA · PROGRESIÓN EN 4 SEMANAS</span>
+          </div>
+
+          <h1 class="font-display font-black text-3xl sm:text-5xl lg:text-[50px] text-brand-navy leading-[1.1] tracking-tight mb-5">
+            Muévete mejor en <span class="text-brand-orange">10–15 minutos al día</span>, sin gimnasio ni complicaciones.
+          </h1>
+
+          <p class="text-base sm:text-lg text-slate-600 leading-relaxed mb-7 max-w-2xl">
+            Un sistema progresivo de <strong class="text-brand-navy">30 días</strong> para soltar rigidez, mejorar tu postura y ganar fuerza básica en casa, con opción de continuidad mensual para mantener el hábito sin estancarte.
+          </p>
+
+          <div class="flex flex-col sm:flex-row items-stretch sm:items-center gap-3 mb-6">
+            <a href="#planes" class="px-6 py-4 rounded-2xl bg-brand-orange hover:bg-brand-orangeDark text-white font-display font-extrabold text-sm sm:text-base text-center shadow-lg shadow-orange-500/25 transition active:scale-95">
+              Empezar el Reto 30 Días →
+            </a>
+            <a href="#prueba-gratis" class="px-6 py-4 rounded-2xl bg-white hover:bg-slate-100 text-brand-navy border-2 border-slate-200 font-display font-extrabold text-sm sm:text-base text-center transition">
+              Probar 3 Días Gratis
+            </a>
+          </div>
+
+          <p class="text-xs text-slate-500 font-medium flex flex-wrap items-center gap-x-4 gap-y-1">
+            <span>✓ Acceso inmediato desde móvil o PC</span>
+            <span>✓ Sin material ni pesas</span>
+            <span>✓ Adaptable si pasas horas sentado</span>
+          </p>
+        </div>
+
+        <div class="lg:col-span-5">
+          <div class="bg-white rounded-3xl border-2 border-slate-200 p-5 sm:p-6 shadow-xl">
+            <div class="flex items-center justify-between pb-4 mb-4 border-b border-slate-100">
+              <div>
+                <span class="text-[11px] font-display font-extrabold uppercase tracking-wider text-brand-orange">Hoja de Ruta · 30 Días</span>
+                <h2 class="font-display font-black text-lg text-brand-navy">Progresión en 4 Semanas</h2>
+              </div>
+              <span class="px-2.5 py-1 rounded-xl bg-orange-50 text-brand-orangeDark font-display font-extrabold text-xs">
+                10–15 min/día
+              </span>
+            </div>
+
+            <div class="space-y-2.5 mb-5">
+              <div class="p-3 rounded-2xl bg-slate-50 border border-slate-200/80 flex items-center justify-between gap-2">
+                <div>
+                  <p class="text-xs font-display font-extrabold text-brand-navy">Semana 1 · Toma de contacto</p>
+                  <p class="text-[11px] text-slate-500">Movilidad suave y control articular sin agujetas</p>
+                </div>
+                <span class="text-[11px] font-bold text-slate-700 bg-white px-2.5 py-1 rounded-lg border border-slate-200 shrink-0">8–10 min</span>
+              </div>
+
+              <div class="p-3 rounded-2xl bg-slate-50 border border-slate-200/80 flex items-center justify-between gap-2">
+                <div>
+                  <p class="text-xs font-display font-extrabold text-brand-navy">Semana 2 · Constancia y amplitud</p>
+                  <p class="text-[11px] text-slate-500">Mayor rango de movimiento y postura diaria</p>
+                </div>
+                <span class="text-[11px] font-bold text-slate-700 bg-white px-2.5 py-1 rounded-lg border border-slate-200 shrink-0">10–12 min</span>
+              </div>
+
+              <div class="p-3 rounded-2xl bg-slate-50 border border-slate-200/80 flex items-center justify-between gap-2">
+                <div>
+                  <p class="text-xs font-display font-extrabold text-brand-navy">Semana 3 · Progresión suave</p>
+                  <p class="text-[11px] text-slate-500">Pausas isométricas y estabilidad funcional</p>
+                </div>
+                <span class="text-[11px] font-bold text-brand-orange bg-orange-50 px-2.5 py-1 rounded-lg border border-orange-200 shrink-0">12–15 min</span>
+              </div>
+
+              <div class="p-3 rounded-2xl bg-brand-navy text-white flex items-center justify-between gap-2">
+                <div>
+                  <p class="text-xs font-display font-extrabold text-white">Semana 4 · Consolidación real</p>
+                  <p class="text-[11px] text-slate-300">Rutinas fluidas y hábito automático fijado</p>
+                </div>
+                <span class="text-[11px] font-bold bg-brand-orange text-white px-2.5 py-1 rounded-lg shrink-0">12–15 min</span>
+              </div>
+            </div>
+
+            <div class="grid grid-cols-3 gap-2.5 pt-2 border-t border-slate-100 text-center">
+              <div class="bg-slate-50 rounded-2xl p-2.5">
+                <p class="font-display font-black text-lg text-brand-navy">30</p>
+                <p class="text-[11px] font-semibold text-slate-500">Sesiones guiadas</p>
+              </div>
+              <div class="bg-slate-50 rounded-2xl p-2.5">
+                <p class="font-display font-black text-lg text-brand-orange">0</p>
+                <p class="text-[11px] font-semibold text-slate-500">Material necesario</p>
+              </div>
+              <div class="bg-slate-50 rounded-2xl p-2.5">
+                <p class="font-display font-black text-lg text-brand-navy">12</p>
+                <p class="text-[11px] font-semibold text-slate-500">Meses plan anual</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- SECCIÓN: CÓMO FUNCIONA -->
+    <section id="como-funciona" class="py-16 sm:py-20 bg-white border-b border-slate-200/80">
+      <div class="max-w-6xl mx-auto px-4 sm:px-6">
+        <div class="max-w-2xl mb-10">
+          <span class="inline-block text-xs font-display font-extrabold uppercase tracking-wider text-brand-orange bg-orange-50 border border-orange-200 px-3 py-1 rounded-full mb-3">
+            Cómo funciona el sistema modular
+          </span>
+          <h2 class="font-display font-black text-2xl sm:text-4xl text-brand-navy tracking-tight mb-3">
+            Cada día sigue una estructura clara de 3 bloques
+          </h2>
+          <p class="text-slate-600 text-sm sm:text-base leading-relaxed">
+            No necesitas vídeos eternos de 45 minutos ni improvisar qué hacer cada mañana. Cada sesión está diseñada para entrar, entrenar con buena técnica y seguir con tu día.
+          </p>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-5 mb-14">
+          <div class="rounded-3xl bg-brand-surface border border-slate-200 p-6">
+            <div class="w-10 h-10 rounded-2xl bg-brand-navy text-white font-display font-black text-sm flex items-center justify-center mb-4">01</div>
+            <div class="flex items-center justify-between mb-2">
+              <h3 class="font-display font-extrabold text-lg text-brand-navy">Calentamiento</h3>
+              <span class="text-xs font-bold text-slate-500 bg-white px-2.5 py-1 rounded-lg border border-slate-200">2 min</span>
+            </div>
+            <p class="text-sm text-slate-600 leading-relaxed">
+              Activación articular suave y respiración para preparar cuello, espalda y caderas antes de moverte, especialmente útil si vienes de estar sentado.
+            </p>
+          </div>
+
+          <div class="rounded-3xl bg-brand-surface border-2 border-brand-orange p-6 shadow-sm">
+            <div class="w-10 h-10 rounded-2xl bg-brand-orange text-white font-display font-black text-sm flex items-center justify-center mb-4">02</div>
+            <div class="flex items-center justify-between mb-2">
+              <h3 class="font-display font-extrabold text-lg text-brand-navy">Bloque Principal</h3>
+              <span class="text-xs font-bold text-brand-orange bg-orange-50 px-2.5 py-1 rounded-lg border border-orange-200">8–10 min</span>
+            </div>
+            <p class="text-sm text-slate-600 leading-relaxed">
+              El movimiento o circuito clave del día con clip de demostración, <strong class="text-brand-navy">error típico que evitar</strong> y <strong class="text-brand-navy">variante fácil</strong> por si tienes rigidez.
+            </p>
+          </div>
+
+          <div class="rounded-3xl bg-brand-surface border border-slate-200 p-6">
+            <div class="w-10 h-10 rounded-2xl bg-brand-navy text-white font-display font-black text-sm flex items-center justify-center mb-4">03</div>
+            <div class="flex items-center justify-between mb-2">
+              <h3 class="font-display font-extrabold text-lg text-brand-navy">Vuelta a la Calma</h3>
+              <span class="text-xs font-bold text-slate-500 bg-white px-2.5 py-1 rounded-lg border border-slate-200">2 min</span>
+            </div>
+            <p class="text-sm text-slate-600 leading-relaxed">
+              Descarga final y registro rápido en tu checklist diario para fijar el hábito sin terminar agotado.
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- SECCIÓN: MINI-RETO GRATUITO INTERACTIVO DE 3 DÍAS -->
+    <section id="prueba-gratis" class="py-16 sm:py-20 bg-brand-surface border-b border-slate-200/80">
+      <div class="max-w-5xl mx-auto px-4 sm:px-6">
+        <div class="text-center max-w-2xl mx-auto mb-10">
+          <span class="inline-block text-xs font-display font-extrabold uppercase tracking-wider text-brand-navy bg-slate-200/80 px-3 py-1 rounded-full mb-3">
+            Prueba el método antes de decidir
+          </span>
+          <h2 class="font-display font-black text-2xl sm:text-4xl text-brand-navy tracking-tight mb-3">
+            Mini-Reto Gratuito de 3 Días
+          </h2>
+          <p class="text-slate-600 text-sm sm:text-base">
+            Haz hoy mismo el <strong class="text-brand-navy">Día 1 completo</strong> con temporizador integrado. Introduce tu correo para desbloquear gratis los <strong class="text-brand-navy">Días 2 y 3</strong> al instante.
+          </p>
+        </div>
+
+        <div class="bg-white rounded-3xl border-2 border-brand-navy shadow-xl overflow-hidden">
+          <div class="bg-brand-navy px-4 sm:px-6 pt-4 flex flex-wrap items-center justify-between gap-3">
+            <div class="flex items-center gap-2">
+              <button onclick="selectFreeTrialDay(1)" id="freeTab-1" class="px-4 py-2.5 rounded-t-2xl font-display font-extrabold text-xs sm:text-sm bg-white text-brand-navy cursor-pointer transition">
+                Día 1 · Cuello y Postura (Gratis)
+              </button>
+              <button onclick="selectFreeTrialDay(2)" id="freeTab-2" class="px-4 py-2.5 rounded-t-2xl font-display font-extrabold text-xs sm:text-sm bg-white/10 text-slate-300 hover:text-white cursor-pointer transition flex items-center gap-1.5">
+                <span id="freeLock-2">🔒</span>
+                <span>Día 2 · Tórax y Espalda</span>
+              </button>
+              <button onclick="selectFreeTrialDay(3)" id="freeTab-3" class="px-4 py-2.5 rounded-t-2xl font-display font-extrabold text-xs sm:text-sm bg-white/10 text-slate-300 hover:text-white cursor-pointer transition flex items-center gap-1.5">
+                <span id="freeLock-3">🔒</span>
+                <span>Día 3 · Cadera y Lumbar</span>
+              </button>
+            </div>
+            <span class="text-[11px] font-bold text-orange-400 pb-2">⏱ 8–10 min/día</span>
+          </div>
+
+          <div id="freeTrialContent" class="p-5 sm:p-8 grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
+            <div class="lg:col-span-5 space-y-4">
+              <div class="rounded-2xl bg-slate-50 border border-slate-200 p-4 text-center">
+                <div class="flex items-center justify-between text-[11px] font-bold text-slate-500 mb-2">
+                  <span class="flex items-center gap-1.5 text-brand-orange">
+                    <span class="w-2 h-2 rounded-full bg-brand-orange live-dot"></span>
+                    CLIP DE DEMOSTRACIÓN
+                  </span>
+                  <span id="freeMotionDuration">35 seg / lado</span>
+                </div>
+                <div id="freeMotionSvgBox" class="flex items-center justify-center"></div>
+                <p id="freeMotionCaption" class="text-xs font-bold text-brand-navy mt-2">Descarga cervical controlada</p>
+              </div>
+
+              <div class="rounded-2xl bg-brand-navy text-white p-4">
+                <div class="flex items-center justify-between mb-2">
+                  <div>
+                    <p class="text-[10px] font-display font-extrabold uppercase tracking-wider text-slate-400">Temporizador de Serie</p>
+                    <p id="freeTimerClock" class="font-display font-black text-3xl text-white tabular-nums">00:45</p>
+                  </div>
+                  <div class="flex gap-1.5">
+                    <button onclick="setFreeTimer(45)" class="px-2.5 py-1.5 rounded-lg bg-white/10 hover:bg-white/20 text-xs font-bold cursor-pointer">45s</button>
+                    <button onclick="setFreeTimer(60)" class="px-2.5 py-1.5 rounded-lg bg-white/10 hover:bg-white/20 text-xs font-bold cursor-pointer">60s</button>
+                    <button onclick="setFreeTimer(90)" class="px-2.5 py-1.5 rounded-lg bg-white/10 hover:bg-white/20 text-xs font-bold cursor-pointer">90s</button>
+                  </div>
+                </div>
+                <div class="w-full h-1.5 bg-slate-800 rounded-full overflow-hidden mb-3">
+                  <div id="freeTimerBar" class="h-full bg-brand-orange transition-all duration-300" style="width: 100%"></div>
+                </div>
+                <div class="flex gap-2">
+                  <button id="freeTimerStartBtn" onclick="toggleFreeTimer()" class="flex-1 py-2.5 rounded-xl bg-brand-orange hover:bg-brand-orangeDark text-white font-display font-extrabold text-xs uppercase tracking-wider cursor-pointer transition">
+                    ▶ Iniciar
+                  </button>
+                  <button onclick="resetFreeTimer()" class="px-3.5 py-2.5 rounded-xl bg-white/10 hover:bg-white/20 text-slate-200 text-xs font-bold cursor-pointer">
+                    ↺ Reset
+                  </button>
+                </div>
+              </div>
+            </div>
+
+            <div class="lg:col-span-7 space-y-4">
+              <div>
+                <span id="freeDayBadge" class="text-xs font-display font-extrabold text-brand-orange uppercase">DÍA 1 DE 3 · SESIÓN DE PRUEBA</span>
+                <h3 id="freeDayTitle" class="font-display font-black text-xl sm:text-2xl text-brand-navy mt-0.5">
+                  Descarga de cuello y trapecios + postura sentado
+                </h3>
+              </div>
+
+              <div class="bg-slate-50 border border-slate-200 rounded-2xl p-4 space-y-2 text-xs sm:text-sm text-slate-700">
+                <p><strong class="text-brand-navy">1. Calentamiento (2 min):</strong> Círculos suaves de hombros atrás (10 reps) y respiración profunda sentado con espalda apoyada.</p>
+                <p id="freeMainStep"><strong class="text-brand-navy">2. Bloque Principal (6 min):</strong> Inclina lentamente la oreja derecha hacia el hombro derecho sin subir el hombro contrario. Mantén 30–45 seg por lado (3 rondas).</p>
+                <p><strong class="text-brand-navy">3. Vuelta a la calma (2 min):</strong> Retracción cervical suave (doble mentón) 8 repeticiones lentas.</p>
+              </div>
+
+              <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                <div class="rounded-2xl bg-amber-50 border border-amber-200 p-3.5 text-xs">
+                  <p class="font-display font-extrabold text-amber-900 mb-1">⚠️ Error típico a evitar</p>
+                  <p id="freeErrorText" class="text-amber-800 leading-relaxed">Tirar fuerte de la cabeza con la mano o encoger los hombros hacia las orejas.</p>
+                </div>
+                <div class="rounded-2xl bg-blue-50 border border-blue-200 p-3.5 text-xs">
+                  <p class="font-display font-extrabold text-blue-950 mb-1">✓ Variante fácil</p>
+                  <p id="freeEasyText" class="text-blue-900 leading-relaxed">Hazlo sentado apoyando la espalda en el respaldo y reduce el ángulo a la mitad.</p>
+                </div>
+              </div>
+
+              <div id="freeUnlockBox" class="pt-3 border-t border-slate-200">
+                <form onsubmit="unlockFreeDays(event)" class="bg-slate-900 text-white rounded-2xl p-4 flex flex-col sm:flex-row items-stretch sm:items-center gap-3">
+                  <div class="flex-1">
+                    <p class="font-display font-extrabold text-xs sm:text-sm text-white">Desbloquea gratis los Días 2 y 3 ahora</p>
+                    <p class="text-[11px] text-slate-300">Introduce tu correo para probar las 3 sesiones completas.</p>
+                  </div>
+                  <div class="flex gap-2">
+                    <input id="freeTrialEmailInput" type="email" required placeholder="tu@correo.com" class="px-3.5 py-2.5 rounded-xl bg-white text-brand-navy text-xs sm:text-sm font-medium focus:outline-none w-full sm:w-48" />
+                    <button type="submit" class="px-4 py-2.5 rounded-xl bg-brand-orange hover:bg-brand-orangeDark text-white font-display font-extrabold text-xs uppercase tracking-wide shrink-0 cursor-pointer">
+                      Desbloquear
+                    </button>
+                  </div>
+                </form>
+              </div>
+
+              <div id="freeUnlockedBanner" class="hidden bg-emerald-50 border border-emerald-200 rounded-2xl p-3.5 flex flex-wrap items-center justify-between gap-2 text-xs text-emerald-900">
+                <span><strong>✓ Días 1, 2 y 3 desbloqueados</strong> para <span id="unlockedEmailLabel" class="underline"></span>.</span>
+                <a href="#planes" class="font-display font-extrabold text-brand-orange hover:underline">Ver Reto Completo de 30 Días →</a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- SECCIÓN: TEMARIO INTERACTIVO -->
+    <section id="temario" class="py-16 sm:py-20 bg-white border-b border-slate-200/80">
+      <div class="max-w-6xl mx-auto px-4 sm:px-6">
+        <div class="text-center max-w-2xl mx-auto mb-10">
+          <span class="inline-block text-xs font-display font-extrabold uppercase tracking-wider text-brand-orange bg-orange-50 border border-orange-200 px-3 py-1 rounded-full mb-3">
+            Transparencia Total
+          </span>
+          <h2 class="font-display font-black text-2xl sm:text-4xl text-brand-navy tracking-tight mb-3">
+            Qué incluye exactamente por dentro
+          </h2>
+          <p class="text-slate-600 text-sm sm:text-base">
+            Explora el índice completo de los 30 días, el plan anual del Club Mensual (12 meses) y las rutinas comodín antes de dar el paso.
+          </p>
+        </div>
+
+        <div class="flex flex-wrap justify-center gap-2 mb-8">
+          <button onclick="switchLandingSyllabusTab('reto')" id="sylTab-reto" class="syl-tab px-5 py-3 rounded-2xl font-display font-extrabold text-xs sm:text-sm bg-brand-navy text-white shadow cursor-pointer transition">
+            1. Reto 30 Días (Mes 1)
+          </button>
+          <button onclick="switchLandingSyllabusTab('club')" id="sylTab-club" class="syl-tab px-5 py-3 rounded-2xl font-display font-extrabold text-xs sm:text-sm bg-slate-100 text-slate-600 hover:bg-slate-200 cursor-pointer transition">
+            2. Club Mensual (Meses 2 al 12)
+          </button>
+          <button onclick="switchLandingSyllabusTab('comodines')" id="sylTab-comodines" class="syl-tab px-5 py-3 rounded-2xl font-display font-extrabold text-xs sm:text-sm bg-slate-100 text-slate-600 hover:bg-slate-200 cursor-pointer transition">
+            3. Rutinas Comodín (7–10 min)
+          </button>
+        </div>
+
+        <div id="landingSyllabusContent" class="bg-brand-surface rounded-3xl border border-slate-200 p-5 sm:p-8"></div>
+      </div>
+    </section>
+
+    <!-- SECCIÓN DE PRECIOS -->
+    <section id="planes" class="py-16 sm:py-20 bg-brand-surface border-b border-slate-200/80">
+      <div class="max-w-6xl mx-auto px-4 sm:px-6">
+        <div class="text-center max-w-2xl mx-auto mb-12">
+          <span class="inline-block text-xs font-display font-extrabold uppercase tracking-wider text-brand-orange bg-orange-50 border border-orange-200 px-3 py-1 rounded-full mb-3">
+            Planes y Precios
+          </span>
+          <h2 class="font-display font-black text-2xl sm:text-4xl text-brand-navy tracking-tight mb-3">
+            Empieza con el Reto de 30 Días o únete al Club Mensual
+          </h2>
+          <p class="text-slate-600 text-sm sm:text-base">
+            Acceso inmediato en todos los dispositivos. Sin permanencias ni letra pequeña.
+          </p>
+        </div>
+
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-6 lg:gap-7 items-stretch">
+          <div class="bg-white rounded-3xl border border-slate-200 p-6 sm:p-7 flex flex-col justify-between">
+            <div>
+              <div class="flex items-center justify-between mb-3">
+                <span class="px-2.5 py-1 rounded-lg bg-slate-50 border border-slate-200 text-slate-700 font-display font-bold text-xs">Opción 1</span>
+                <span class="text-xs font-semibold text-slate-500">Pago único</span>
+              </div>
+              <h3 class="font-display font-extrabold text-xl text-brand-navy mb-2">Reto 30 Días · Movilidad y Postura</h3>
+              <p class="text-xs sm:text-sm text-slate-500 mb-5">El plan cerrado de 30 días para soltar rigidez de cuello, espalda, cadera y tobillos en 10–15 min al día.</p>
+              <div class="flex items-baseline gap-1.5 mb-6">
+                <span class="font-display font-black text-4xl text-brand-navy">19 €</span>
+                <span class="text-xs font-semibold text-slate-500">pago único · acceso completo</span>
+              </div>
+              <ul class="space-y-3 text-sm text-slate-700 mb-7">
+                <li class="flex items-start gap-2.5"><span class="text-brand-orange font-bold mt-0.5">✓</span><span>Acceso inmediato a los <strong>30 días completos</strong> organizados por semanas.</span></li>
+                <li class="flex items-start gap-2.5"><span class="text-brand-orange font-bold mt-0.5">✓</span><span>Clips de demostración con error típico y 3 niveles de intensidad.</span></li>
+                <li class="flex items-start gap-2.5"><span class="text-brand-orange font-bold mt-0.5">✓</span><span>Checklist diario de progreso y temporizador integrado.</span></li>
+              </ul>
+            </div>
+            <button onclick="openCheckout('reto30')" class="w-full py-3.5 px-5 rounded-2xl bg-brand-navy hover:bg-brand-navyLight text-white font-display font-extrabold text-sm transition cursor-pointer">
+              Elegir Reto 30 Días (19 €)
+            </button>
+          </div>
+
+          <div class="relative bg-brand-navy text-white rounded-3xl border-2 border-brand-orange p-6 sm:p-8 shadow-2xl flex flex-col justify-between lg:-translate-y-2">
+            <div class="absolute -top-3.5 left-1/2 -translate-x-1/2 bg-brand-orange text-white font-display font-black text-[11px] uppercase tracking-wider px-4 py-1 rounded-full shadow whitespace-nowrap">
+              ★ Más Elegido · Todo Incluido
+            </div>
+            <div>
+              <div class="flex items-center justify-between mb-3 mt-1">
+                <span class="px-2.5 py-1 rounded-lg bg-white/10 text-orange-300 font-display font-bold text-xs">Opción 2</span>
+                <span class="text-xs font-semibold text-slate-300">Pago único + Plan Anual</span>
+              </div>
+              <h3 class="font-display font-extrabold text-2xl text-white mb-2">Pack Completo: Reto 30 Días + Club</h3>
+              <p class="text-xs sm:text-sm text-slate-300 mb-5">Llévate el sistema completo: movilidad, fuerza básica en casa sin pesas, rutinas exprés y comodines.</p>
+              <div class="flex items-baseline gap-2 mb-6">
+                <span class="font-display font-black text-4xl sm:text-5xl text-white">29 €</span>
+                <span class="text-sm text-slate-400 line-through">43 €</span>
+                <span class="text-xs font-semibold text-orange-400">acceso inmediato</span>
+              </div>
+              <ul class="space-y-3 text-sm text-slate-200 mb-7">
+                <li class="flex items-start gap-2.5"><span class="text-brand-orange font-bold mt-0.5">✓</span><span><strong>Reto de 30 Días completo</strong> (Mes 1: Movilidad y Postura).</span></li>
+                <li class="flex items-start gap-2.5"><span class="text-brand-orange font-bold mt-0.5">✓</span><span><strong>Plan Anual del Club (Meses 2 al 12):</strong> Fuerza en casa y rutinas exprés.</span></li>
+                <li class="flex items-start gap-2.5"><span class="text-brand-orange font-bold mt-0.5">✓</span><span><strong>Rutinas Comodín incluidas:</strong> "Día malo 7 min" y "Viaje sin material".</span></li>
+              </ul>
+            </div>
+            <button onclick="openCheckout('packCompleto')" class="w-full py-4 px-5 rounded-2xl bg-brand-orange hover:bg-brand-orangeDark text-white font-display font-extrabold text-sm sm:text-base shadow-lg shadow-orange-500/30 transition active:scale-95 cursor-pointer">
+              Empezar Pack Completo (29 €) →
+            </button>
+          </div>
+
+          <div class="bg-white rounded-3xl border border-slate-200 p-6 sm:p-7 flex flex-col justify-between">
+            <div>
+              <div class="flex items-center justify-between mb-3">
+                <span class="px-2.5 py-1 rounded-lg bg-slate-50 border border-slate-200 text-slate-700 font-display font-bold text-xs">Opción 3</span>
+                <span class="text-xs font-semibold text-slate-500">Suscripción flexible</span>
+              </div>
+              <h3 class="font-display font-extrabold text-xl text-brand-navy mb-2">Club Mensual 30D</h3>
+              <p class="text-xs sm:text-sm text-slate-500 mb-5">Para mantener la constancia todo el año con bloques temáticos nuevos cada mes y toda la biblioteca abierta.</p>
+              <div class="flex items-baseline gap-1.5 mb-6">
+                <span class="font-display font-black text-4xl text-brand-navy">12 €</span>
+                <span class="text-xs font-semibold text-slate-500">/ mes · cancela en 1 clic</span>
+              </div>
+              <ul class="space-y-3 text-sm text-slate-700 mb-7">
+                <li class="flex items-start gap-2.5"><span class="text-brand-orange font-bold mt-0.5">✓</span><span><strong>1 bloque temático nuevo cada mes</strong> (12 meses estructurados).</span></li>
+                <li class="flex items-start gap-2.5"><span class="text-brand-orange font-bold mt-0.5">✓</span><span><strong>2 rutinas comodín fijas:</strong> "Día malo 7 min" y "Viaje sin material".</span></li>
+                <li class="flex items-start gap-2.5"><span class="text-brand-orange font-bold mt-0.5">✓</span><span>Sin permanencia: pausas o cancelas cuando quieras.</span></li>
+              </ul>
+            </div>
+            <button onclick="openCheckout('clubMensual')" class="w-full py-3.5 px-5 rounded-2xl bg-brand-navy hover:bg-brand-navyLight text-white font-display font-extrabold text-sm transition cursor-pointer">
+              Unirme al Club (12 €/mes)
+            </button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- FAQ -->
+    <section id="faq" class="py-16 sm:py-20 bg-brand-surface">
+      <div class="max-w-3xl mx-auto px-4 sm:px-6">
+        <div class="text-center mb-10">
+          <h2 class="font-display font-black text-2xl sm:text-3xl text-brand-navy tracking-tight mb-2">Preguntas Frecuentes</h2>
+          <p class="text-sm text-slate-600">Resolvemos las dudas más habituales antes de empezar.</p>
+        </div>
+
+        <div class="space-y-3">
+          <div class="faq-box bg-white rounded-2xl border border-slate-200 overflow-hidden">
+            <button onclick="toggleFaqItem(this)" class="w-full px-5 py-4 text-left flex items-center justify-between gap-4 font-display font-bold text-sm sm:text-base text-brand-navy cursor-pointer">
+              <span>¿Necesito material o ir al gimnasio?</span>
+              <span class="faq-symbol text-brand-orange font-black text-xl">+</span>
+            </button>
+            <div class="faq-panel hidden px-5 pb-4 pt-3 border-t border-slate-100 text-sm text-slate-600 leading-relaxed">
+              No. Todos los ejercicios del Reto de 30 Días y de los bloques del Club están diseñados para hacerse en casa usando solo tu peso corporal, una silla, una pared o una esterilla/toalla.
+            </div>
+          </div>
+
+          <div class="faq-box bg-white rounded-2xl border border-slate-200 overflow-hidden">
+            <button onclick="toggleFaqItem(this)" class="w-full px-5 py-4 text-left flex items-center justify-between gap-4 font-display font-bold text-sm sm:text-base text-brand-navy cursor-pointer">
+              <span>¿Qué pasa si un día no tengo tiempo?</span>
+              <span class="faq-symbol text-brand-orange font-black text-xl">+</span>
+            </button>
+            <div class="faq-panel hidden px-5 pb-4 pt-3 border-t border-slate-100 text-sm text-slate-600 leading-relaxed">
+              Las sesiones duran entre 10 y 15 minutos, y además dentro del Área de Alumno tienes el <strong>Modo "Día malo / Cero ganas" de 7 minutos</strong> para mantener la racha sin abandonar el hábito.
+            </div>
+          </div>
+
+          <div class="faq-box bg-white rounded-2xl border border-slate-200 overflow-hidden">
+            <button onclick="toggleFaqItem(this)" class="w-full px-5 py-4 text-left flex items-center justify-between gap-4 font-display font-bold text-sm sm:text-base text-brand-navy cursor-pointer">
+              <span>¿Qué pasa cuando acabo los 30 días?</span>
+              <span class="faq-symbol text-brand-orange font-black text-xl">+</span>
+            </button>
+            <div class="faq-panel hidden px-5 pb-4 pt-3 border-t border-slate-100 text-sm text-slate-600 leading-relaxed">
+              Al llegar al Día 30 tienes una evaluación final y puedes continuar con los <strong>Meses 2 al 12 dentro del Club Mensual 30D</strong> (fuerza en casa, rutinas exprés, espalda blindada y más) para seguir progresando todo el año.
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- 3) ÁREA DE ALUMNO PRIVADA -->
+  <section id="studentView" class="hidden min-h-screen bg-brand-surface pb-16">
+    <div class="bg-brand-navy text-white border-b border-slate-800">
+      <div class="max-w-6xl mx-auto px-4 sm:px-6 py-5">
+        <div class="flex flex-col lg:flex-row lg:items-center justify-between gap-4">
+          <div>
+            <div class="flex flex-wrap items-center gap-2 mb-1">
+              <span class="px-2.5 py-0.5 rounded-lg bg-brand-orange text-white font-display font-extrabold text-[11px] uppercase tracking-wider">
+                Área Privada · Método 30D
+              </span>
+              <span id="studentPlanStatusBadge" class="px-2.5 py-0.5 rounded-lg bg-white/10 text-slate-200 text-xs font-semibold">
+                Acceso Completo Activo
+              </span>
+              <span id="studentUserEmailBadge" class="px-2.5 py-0.5 rounded-lg bg-emerald-500/20 text-emerald-300 text-xs font-semibold"></span>
+            </div>
+            <h1 class="font-display font-black text-xl sm:text-2xl text-white">
+              Panel de Entrenamiento · 30 Días con Álex
+            </h1>
+          </div>
+
+          <div class="flex flex-wrap items-center gap-3 sm:gap-4 bg-white/5 border border-white/10 rounded-2xl p-3">
+            <div>
+              <div class="flex items-center justify-between gap-4 text-xs font-bold mb-1">
+                <span class="text-slate-300">Racha Reto 30D:</span>
+                <span id="streakCounterLabel" class="text-brand-orange font-display font-black">0 / 30 días (0%)</span>
+              </div>
+              <div class="w-44 sm:w-52 h-2.5 bg-slate-800 rounded-full overflow-hidden">
+                <div id="streakProgressBar" class="h-full bg-brand-orange transition-all duration-300" style="width: 0%"></div>
+              </div>
+            </div>
+
+            <select id="quickModuleSelect" onchange="handleQuickModuleSelect(this.value)" class="px-3 py-2 rounded-xl bg-slate-800 border border-slate-700 text-xs font-bold text-white focus:outline-none cursor-pointer">
+              <option value="reto">Mes 1 · Reto 30 Días</option>
+              <option value="club2">Mes 2 · Club Fuerza Casa</option>
+              <option value="club3">Mes 3 · Club Rutinas Exprés</option>
+              <option value="comodines">Rutinas Comodín (7–10m)</option>
+            </select>
+
+            <button onclick="logoutStudentSupabase()" class="px-3 py-2 rounded-xl bg-red-500/20 hover:bg-red-500/30 border border-red-400/30 text-red-200 text-xs font-display font-bold cursor-pointer transition">
+              Salir
+            </button>
+          </div>
+        </div>
+
+        <div class="flex items-center gap-2 mt-5 overflow-x-auto pb-1">
+          <button onclick="switchStudentTab('reto')" id="sTab-reto" class="student-tab px-4 py-2.5 rounded-xl font-display font-extrabold text-xs sm:text-sm whitespace-nowrap cursor-pointer transition bg-brand-orange text-white">
+            1. Reto de 30 Días (Días 1–30)
+          </button>
+          <button onclick="switchStudentTab('club')" id="sTab-club" class="student-tab px-4 py-2.5 rounded-xl font-display font-extrabold text-xs sm:text-sm whitespace-nowrap cursor-pointer transition bg-white/10 text-slate-300 hover:text-white">
+            2. Club Mensual (Meses 2 al 12)
+          </button>
+          <button onclick="switchStudentTab('comodines')" id="sTab-comodines" class="student-tab px-4 py-2.5 rounded-xl font-display font-extrabold text-xs sm:text-sm whitespace-nowrap cursor-pointer transition bg-white/10 text-slate-300 hover:text-white">
+            3. Rutinas Comodín
+          </button>
+          <button onclick="switchStudentTab('biblioteca')" id="sTab-biblioteca" class="student-tab px-4 py-2.5 rounded-xl font-display font-extrabold text-xs sm:text-sm whitespace-nowrap cursor-pointer transition bg-white/10 text-slate-300 hover:text-white">
+            4. Biblioteca de Movimientos Base
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <div class="max-w-6xl mx-auto px-4 sm:px-6 pt-6">
+      <!-- PESTAÑA 1: RETO DE 30 DÍAS -->
+      <div id="panel-reto" class="student-panel grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
+        <div class="lg:col-span-5 space-y-4">
+          <div class="bg-white rounded-3xl border border-slate-200 p-5 shadow-sm">
+            <div class="flex items-center justify-between mb-3">
+              <h2 class="font-display font-extrabold text-sm uppercase tracking-wider text-brand-navy">Calendario 30 Días</h2>
+              <span id="weekBadgeLabel" class="text-xs font-bold text-brand-orange">Todos los días (1–30)</span>
+            </div>
+
+            <div class="grid grid-cols-5 gap-1.5 mb-4">
+              <button onclick="filterRetoWeek(0)" id="wFilter-0" class="w-filter py-1.5 rounded-lg text-[11px] font-display font-extrabold bg-brand-navy text-white cursor-pointer">Todos</button>
+              <button onclick="filterRetoWeek(1)" id="wFilter-1" class="w-filter py-1.5 rounded-lg text-[11px] font-display font-extrabold bg-slate-100 text-slate-600 hover:bg-slate-200 cursor-pointer">Sem 1</button>
+              <button onclick="filterRetoWeek(2)" id="wFilter-2" class="w-filter py-1.5 rounded-lg text-[11px] font-display font-extrabold bg-slate-100 text-slate-600 hover:bg-slate-200 cursor-pointer">Sem 2</button>
+              <button onclick="filterRetoWeek(3)" id="wFilter-3" class="w-filter py-1.5 rounded-lg text-[11px] font-display font-extrabold bg-slate-100 text-slate-600 hover:bg-slate-200 cursor-pointer">Sem 3</button>
+              <button onclick="filterRetoWeek(4)" id="wFilter-4" class="w-filter py-1.5 rounded-lg text-[11px] font-display font-extrabold bg-slate-100 text-slate-600 hover:bg-slate-200 cursor-pointer">Sem 4</button>
+            </div>
+
+            <div id="retoDaysGrid" class="grid grid-cols-5 sm:grid-cols-6 gap-2"></div>
+
+            <div class="mt-4 pt-3 border-t border-slate-100 flex items-center justify-between text-xs text-slate-500">
+              <div class="flex items-center gap-3">
+                <span class="flex items-center gap-1"><span class="w-2.5 h-2.5 rounded bg-emerald-500 inline-block"></span> Hecho</span>
+                <span class="flex items-center gap-1"><span class="w-2.5 h-2.5 rounded bg-brand-orange inline-block"></span> Viendo</span>
+              </div>
+              <button onclick="resetAllStudentProgress()" class="text-slate-400 hover:text-red-600 underline cursor-pointer">Reiniciar avance</button>
+            </div>
+          </div>
+
+          <div class="bg-white rounded-3xl border border-slate-200 p-5 shadow-sm">
+            <h3 class="font-display font-extrabold text-xs uppercase tracking-wider text-slate-400 mb-3">Índice de sesiones</h3>
+            <div id="retoDayListIndex" class="space-y-1.5 max-h-72 overflow-y-auto pr-1"></div>
+          </div>
+        </div>
+
+        <div class="lg:col-span-7">
+          <div class="bg-white rounded-3xl border border-slate-200 p-5 sm:p-7 shadow-sm space-y-6">
+            <div>
+              <div class="flex flex-wrap items-center justify-between gap-2 mb-2">
+                <span id="sessionDayTag" class="px-3 py-1 rounded-xl bg-brand-navy text-white font-display font-extrabold text-xs">
+                  DÍA 1 · SEMANA 1: TOMA DE CONTACTO
+                </span>
+                <span id="sessionTimeTag" class="px-3 py-1 rounded-xl bg-orange-50 text-brand-orangeDark font-display font-extrabold text-xs border border-orange-200">
+                  ⏱ 8–10 min/día
+                </span>
+              </div>
+              <h2 id="sessionTitle" class="font-display font-black text-2xl sm:text-3xl text-brand-navy leading-tight">
+                Día 1: Descarga de cuello y trapecios + postura sentado
+              </h2>
+            </div>
+
+            <div class="rounded-2xl bg-slate-50 border border-slate-200 p-4">
+              <div class="flex flex-wrap items-center justify-between gap-2 mb-3">
+                <div class="flex items-center gap-2">
+                  <span class="w-2.5 h-2.5 rounded-full bg-brand-orange live-dot"></span>
+                  <span class="text-xs font-display font-extrabold text-brand-navy uppercase">Clip de Demostración · Álex</span>
+                </div>
+                <div class="inline-flex rounded-xl bg-white border border-slate-200 p-0.5">
+                  <button onclick="setDemoMode('easy')" id="btnDemoEasy" class="px-2.5 py-1 rounded-lg text-[11px] font-display font-extrabold text-slate-600 hover:text-brand-navy cursor-pointer transition">
+                    Suave
+                  </button>
+                  <button onclick="setDemoMode('standard')" id="btnDemoStandard" class="px-2.5 py-1 rounded-lg text-[11px] font-display font-extrabold bg-brand-navy text-white cursor-pointer transition">
+                    Intermedio
+                  </button>
+                  <button onclick="setDemoMode('intense')" id="btnDemoIntense" class="px-2.5 py-1 rounded-lg text-[11px] font-display font-extrabold text-slate-600 hover:text-brand-navy cursor-pointer transition">
+                    Intenso
+                  </button>
+                </div>
+              </div>
+
+              <div class="grid grid-cols-1 sm:grid-cols-12 gap-4 items-center">
+                <div id="sessionSvgContainer" class="sm:col-span-5 flex items-center justify-center"></div>
+                <div class="sm:col-span-7 space-y-2">
+                  <span id="demoModeBadge" class="inline-block px-2.5 py-0.5 rounded-md bg-slate-200 text-brand-navy font-display font-extrabold text-[11px]">
+                    NIVEL INTERMEDIO · CONTROL ESTÁNDAR
+                  </span>
+                  <h4 id="sessionMoveName" class="font-display font-extrabold text-base text-brand-navy">
+                    Inclinación cervical controlada + retracción escapular
+                  </h4>
+                  <p id="sessionMoveVisualCue" class="text-xs sm:text-sm text-slate-600 leading-relaxed">
+                    Mantén la mirada al frente, hombros relajados abajo y realiza el movimiento lento sin tirones acompañando con exhalación suave.
+                  </p>
+                </div>
+              </div>
+            </div>
+
+            <div class="space-y-3">
+              <h3 class="font-display font-extrabold text-xs uppercase tracking-wider text-slate-400">Estructura de la sesión en 3 bloques</h3>
+
+              <div class="p-4 rounded-2xl bg-slate-50 border border-slate-200">
+                <div class="flex items-center justify-between mb-1">
+                  <span class="font-display font-extrabold text-sm text-brand-navy">1. Calentamiento</span>
+                  <span class="text-xs font-bold text-slate-500">2 min</span>
+                </div>
+                <p id="sessionWarmup" class="text-xs sm:text-sm text-slate-600 leading-relaxed"></p>
+              </div>
+
+              <div class="p-4 rounded-2xl bg-white border-2 border-brand-orange/70 shadow-sm">
+                <div class="flex items-center justify-between mb-1.5">
+                  <span class="font-display font-extrabold text-sm text-brand-orangeDark">2. Bloque Principal (Paso a paso)</span>
+                  <span id="sessionMainTime" class="text-xs font-bold text-brand-orange">6–8 min</span>
+                </div>
+                <p id="sessionMainBlock" class="text-xs sm:text-sm text-slate-700 leading-relaxed mb-3"></p>
+
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 pt-2 border-t border-slate-100">
+                  <div class="rounded-xl bg-amber-50 border border-amber-200 p-3 text-xs">
+                    <p class="font-display font-extrabold text-amber-900 mb-1">⚠️ Error típico a evitar</p>
+                    <p id="sessionErrorTip" class="text-amber-800 leading-relaxed"></p>
+                  </div>
+                  <div class="rounded-xl bg-blue-50 border border-blue-200 p-3 text-xs">
+                    <p class="font-display font-extrabold text-blue-950 mb-1">✓ Variante fácil</p>
+                    <p id="sessionEasyTip" class="text-blue-900 leading-relaxed"></p>
+                  </div>
+                </div>
+              </div>
+
+              <div class="p-4 rounded-2xl bg-slate-50 border border-slate-200">
+                <div class="flex items-center justify-between mb-1">
+                  <span class="font-display font-extrabold text-sm text-brand-navy">3. Vuelta a la Calma</span>
+                  <span class="text-xs font-bold text-slate-500">2 min</span>
+                </div>
+                <p id="sessionCooldown" class="text-xs sm:text-sm text-slate-600 leading-relaxed"></p>
+              </div>
+            </div>
+
+            <div class="rounded-2xl bg-brand-navy text-white p-4 flex flex-col sm:flex-row items-center justify-between gap-4">
+              <div class="flex items-center gap-4">
+                <div>
+                  <p class="text-[10px] font-display font-extrabold uppercase tracking-wider text-slate-400">Temporizador de Sesión</p>
+                  <p id="portalTimerClock" class="font-display font-black text-3xl text-white tabular-nums">00:45</p>
+                </div>
+                <div class="flex flex-wrap gap-1.5">
+                  <button onclick="setPortalTimer(30)" class="px-2.5 py-1.5 rounded-lg bg-white/10 hover:bg-white/20 text-xs font-bold cursor-pointer">30s</button>
+                  <button onclick="setPortalTimer(45)" class="px-2.5 py-1.5 rounded-lg bg-white/10 hover:bg-white/20 text-xs font-bold cursor-pointer">45s</button>
+                  <button onclick="setPortalTimer(60)" class="px-2.5 py-1.5 rounded-lg bg-white/10 hover:bg-white/20 text-xs font-bold cursor-pointer">60s</button>
+                  <button onclick="setPortalTimer(90)" class="px-2.5 py-1.5 rounded-lg bg-white/10 hover:bg-white/20 text-xs font-bold cursor-pointer">90s</button>
+                </div>
+              </div>
+
+              <div class="flex items-center gap-2 w-full sm:w-auto">
+                <button id="portalTimerBtn" onclick="togglePortalTimer()" class="flex-1 sm:flex-initial px-5 py-2.5 rounded-xl bg-brand-orange hover:bg-brand-orangeDark text-white font-display font-extrabold text-xs uppercase tracking-wider cursor-pointer">
+                  ▶ Iniciar
+                </button>
+                <button onclick="resetPortalTimer()" class="px-3.5 py-2.5 rounded-xl bg-white/10 hover:bg-white/20 text-xs font-bold cursor-pointer">
+                  ↺ Reset
+                </button>
+              </div>
+            </div>
+
+            <div id="clubContinuityBanner" class="hidden rounded-2xl bg-gradient-to-r from-brand-navy to-blue-950 text-white p-4 sm:p-5 border border-brand-orange/60 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3">
+              <div>
+                <span class="text-[10px] font-display font-extrabold uppercase tracking-wider text-brand-orange">Hoja de Ruta Anual · 12 Meses</span>
+                <h4 class="font-display font-extrabold text-base text-white mt-0.5">¡Estás en la recta final del Mes 1!</h4>
+                <p class="text-xs text-slate-300 mt-0.5">Tienes los <strong>Meses 2 al 12 del Club</strong> desbloqueados para completar todo el año paso a paso.</p>
+              </div>
+              <button onclick="switchStudentTab('club'); selectClubMonth(2);" class="px-4 py-2.5 rounded-xl bg-brand-orange hover:bg-brand-orangeDark text-white font-display font-extrabold text-xs shrink-0 cursor-pointer transition">
+                Ver Plan Anual (Meses 2–12) →
+              </button>
+            </div>
+
+            <div class="pt-2 border-t border-slate-200 flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-3">
+              <button id="btnCompleteRetoDay" onclick="toggleDayCompletion()" class="flex-1 py-3.5 px-5 rounded-2xl bg-emerald-600 hover:bg-emerald-500 text-white font-display font-extrabold text-xs sm:text-sm shadow transition cursor-pointer">
+                ✓ Marcar Día como Completado
+              </button>
+              <div class="flex gap-2">
+                <button onclick="selectRetoDay(Math.max(1, selectedRetoDay - 1))" class="px-4 py-3.5 rounded-2xl bg-slate-100 hover:bg-slate-200 text-xs font-display font-extrabold text-brand-navy cursor-pointer">
+                  ← Anterior
+                </button>
+                <button onclick="selectRetoDay(Math.min(30, selectedRetoDay + 1))" class="px-4 py-3.5 rounded-2xl bg-slate-100 hover:bg-slate-200 text-xs font-display font-extrabold text-brand-navy cursor-pointer">
+                  Siguiente →
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- PESTAÑA 2: CLUB MENSUAL (MESES 2 AL 12) -->
+      <div id="panel-club" class="student-panel hidden space-y-5">
+        <div class="bg-white rounded-3xl border border-slate-200 p-5 sm:p-6 shadow-sm">
+          <p class="text-xs font-display font-extrabold uppercase tracking-wider text-brand-orange mb-3">Selecciona el Mes del Plan Anual (Meses 2 al 12)</p>
+          <div id="clubMonthsSelector" class="grid grid-cols-2 sm:grid-cols-4 lg:grid-cols-6 gap-2 mb-6"></div>
+          <div id="clubMonthContainer"></div>
+        </div>
+      </div>
+
+      <!-- PESTAÑA 3: RUTINAS COMODÍN -->
+      <div id="panel-comodines" class="student-panel hidden grid grid-cols-1 md:grid-cols-2 gap-6">
+        <div class="bg-white rounded-3xl border border-slate-200 p-6 shadow-sm flex flex-col justify-between gap-4">
+          <div>
+            <span class="inline-block px-3 py-1 rounded-xl bg-orange-50 text-brand-orangeDark font-display font-extrabold text-xs mb-3">COMODÍN 01 · 7 MINUTOS</span>
+            <h3 class="font-display font-black text-xl text-brand-navy mb-2">Modo "Día malo / Cero ganas"</h3>
+            <p class="text-xs sm:text-sm text-slate-600 leading-relaxed mb-4">
+              Para los días en los que llegas agotado o sin tiempo pero quieres mantener tu racha activa sin exigirte de más.
+            </p>
+            <ul class="space-y-2 text-xs text-slate-700 bg-slate-50 p-4 rounded-2xl border border-slate-200">
+              <li><strong>1. Descarga cervical (2 min):</strong> Inclinaciones lentas 30s por lado.</li>
+              <li><strong>2. Rotación lumbar tumbado (3 min):</strong> Giro suave de rodillas de lado a lado.</li>
+              <li><strong>3. Gato-camello respiratorio (2 min):</strong> 8 repeticiones lentas soltando tensión.</li>
+            </ul>
+          </div>
+          <button id="btn-comodin7" onclick="completeComodin('comodin7')" class="w-full py-3.5 rounded-2xl bg-brand-navy hover:bg-brand-navyLight text-white font-display font-extrabold text-xs sm:text-sm cursor-pointer transition">
+            ✓ Marcar Comodín 7 min Completado Hoy
+          </button>
+        </div>
+
+        <div class="bg-white rounded-3xl border border-slate-200 p-6 shadow-sm flex flex-col justify-between gap-4">
+          <div>
+            <span class="inline-block px-3 py-1 rounded-xl bg-slate-100 text-brand-navy font-display font-extrabold text-xs mb-3">COMODÍN 02 · 10 MINUTOS DE PIE</span>
+            <h3 class="font-display font-black text-xl text-brand-navy mb-2">Modo "Viaje / Fuera de casa"</h3>
+            <p class="text-xs sm:text-sm text-slate-600 leading-relaxed mb-4">
+              Sesión 100% de pie sin necesidad de esterilla ni suelo, ideal para hoteles, oficina o viajes.
+            </p>
+            <ul class="space-y-2 text-xs text-slate-700 bg-slate-50 p-4 rounded-2xl border border-slate-200">
+              <li><strong>1. Apertura torácica en pared (3 min):</strong> 6 repeticiones por lado.</li>
+              <li><strong>2. Dorsiflexión de tobillo en pared (3 min):</strong> 10 toques suaves por pie.</li>
+              <li><strong>3. Sentadilla controlada + retracción escapular (4 min):</strong> 3 rondas de 10 reps.</li>
+            </ul>
+          </div>
+          <button id="btn-comodin10" onclick="completeComodin('comodin10')" class="w-full py-3.5 rounded-2xl bg-brand-navy hover:bg-brand-navyLight text-white font-display font-extrabold text-xs sm:text-sm cursor-pointer transition">
+            ✓ Marcar Comodín Viaje 10 min Completado
+          </button>
+        </div>
+      </div>
+
+      <!-- PESTAÑA 4: BIBLIOTECA DE MOVIMIENTOS BASE -->
+      <div id="panel-biblioteca" class="student-panel hidden space-y-5">
+        <div class="bg-white rounded-3xl border border-slate-200 p-5 sm:p-6 shadow-sm">
+          <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 mb-4">
+            <div class="flex flex-wrap gap-1.5">
+              <button onclick="setLibraryZone('Todos')" class="lib-zone-btn px-3.5 py-1.5 rounded-xl text-xs font-display font-extrabold bg-brand-navy text-white cursor-pointer">Todos</button>
+              <button onclick="setLibraryZone('Cuello y Hombros')" class="lib-zone-btn px-3.5 py-1.5 rounded-xl text-xs font-display font-extrabold bg-slate-100 text-slate-600 hover:bg-slate-200 cursor-pointer">Cuello y Hombros</button>
+              <button onclick="setLibraryZone('Espalda y Tórax')" class="lib-zone-btn px-3.5 py-1.5 rounded-xl text-xs font-display font-extrabold bg-slate-100 text-slate-600 hover:bg-slate-200 cursor-pointer">Espalda y Tórax</button>
+              <button onclick="setLibraryZone('Cadera y Lumbar')" class="lib-zone-btn px-3.5 py-1.5 rounded-xl text-xs font-display font-extrabold bg-slate-100 text-slate-600 hover:bg-slate-200 cursor-pointer">Cadera y Lumbar</button>
+              <button onclick="setLibraryZone('Tobillos y Piernas')" class="lib-zone-btn px-3.5 py-1.5 rounded-xl text-xs font-display font-extrabold bg-slate-100 text-slate-600 hover:bg-slate-200 cursor-pointer">Tobillos y Piernas</button>
+              <button onclick="setLibraryZone('Fuerza Base')" class="lib-zone-btn px-3.5 py-1.5 rounded-xl text-xs font-display font-extrabold bg-slate-100 text-slate-600 hover:bg-slate-200 cursor-pointer">Fuerza Base</button>
+            </div>
+            <input id="librarySearchInput" oninput="renderLibraryGrid()" type="search" placeholder="Buscar movimiento..." class="px-3.5 py-2 rounded-xl border border-slate-300 text-xs focus:outline-none focus:border-brand-orange" />
+          </div>
+          <div id="libraryGrid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4"></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- MODAL DE INICIO DE SESIÓN / REGISTRO DEL ALUMNO (SUPABASE AUTH) -->
+  <div id="studentAuthModal" class="hidden fixed inset-0 z-50 bg-slate-950/75 backdrop-blur-sm flex items-center justify-center p-4">
+    <div class="bg-white rounded-3xl max-w-md w-full border border-slate-200 shadow-2xl overflow-hidden">
+      <div class="bg-brand-navy text-white p-5 flex items-center justify-between">
+        <div>
+          <span class="text-[10px] font-display font-extrabold uppercase tracking-wider text-brand-orange">Acceso Sincronizado · Método 30D</span>
+          <h3 class="font-display font-extrabold text-lg">Área de Alumno</h3>
+        </div>
+        <button onclick="closeStudentAuthModal()" class="w-8 h-8 rounded-full bg-white/10 hover:bg-white/20 flex items-center justify-center text-white font-bold cursor-pointer">✕</button>
+      </div>
+
+      <div class="p-6 space-y-4">
+        <p class="text-xs text-slate-600 leading-relaxed">
+          Inicia sesión o crea tu cuenta para guardar tu racha de 30 días y tu avance del Club en todos tus dispositivos.
+        </p>
+
+        <div id="authModalFeedback" class="hidden p-3 rounded-xl text-xs font-semibold"></div>
+
+        <form onsubmit="handleStudentAuthSubmit(event)" class="space-y-3">
+          <div>
+            <label class="block text-xs font-bold text-brand-navy mb-1">Nombre (solo si creas cuenta nueva)</label>
+            <input id="authStudentName" type="text" placeholder="Ej. Álvaro" class="w-full px-3.5 py-2.5 rounded-xl border border-slate-300 text-sm focus:outline-none focus:border-brand-orange" />
+          </div>
+          <div>
+            <label class="block text-xs font-bold text-brand-navy mb-1">Correo electrónico</label>
+            <input id="authStudentEmail" type="email" required placeholder="tu@correo.com" class="w-full px-3.5 py-2.5 rounded-xl border border-slate-300 text-sm focus:outline-none focus:border-brand-orange" />
+          </div>
+          <div>
+            <label class="block text-xs font-bold text-brand-navy mb-1">Contraseña (mín. 6 caracteres)</label>
+            <input id="authStudentPassword" type="password" required minlength="6" placeholder="••••••" class="w-full px-3.5 py-2.5 rounded-xl border border-slate-300 text-sm focus:outline-none focus:border-brand-orange" />
+          </div>
+
+          <div class="grid grid-cols-2 gap-2.5 pt-2">
+            <button type="submit" onclick="authActionMode='login'" class="py-3 px-4 rounded-xl bg-brand-orange hover:bg-brand-orangeDark text-white font-display font-extrabold text-xs uppercase tracking-wider cursor-pointer transition">
+              Iniciar Sesión
+            </button>
+            <button type="submit" onclick="authActionMode='signup'" class="py-3 px-4 rounded-xl bg-brand-navy hover:bg-brand-navyLight text-white font-display font-extrabold text-xs uppercase tracking-wider cursor-pointer transition">
+              Crear Cuenta
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <!-- PIE DE PÁGINA GLOBAL + AVISO DE SALUD + PANEL PRIVADO CREADORES -->
+  <footer class="bg-brand-navy text-slate-300 border-t border-slate-800 py-10 px-4 sm:px-6 text-xs">
+    <div class="max-w-6xl mx-auto space-y-6">
+      <div class="bg-white/5 border border-white/10 rounded-2xl p-4 text-slate-300 leading-relaxed">
+        <strong class="text-white">Aviso importante de salud:</strong> Este programa tiene fines educativos y de organización de hábitos y movimiento; no sustituye el diagnóstico, tratamiento o consejo médico ni de fisioterapia. Si sientes dolor agudo, mareos o tienes una lesión o condición médica previa, detén el ejercicio y consulta con un profesional sanitario.
+      </div>
+      <div class="flex flex-col sm:flex-row items-center justify-between gap-4 pt-2">
+        <p class="text-slate-400">© 2026 30 Días con Álex · Método 30D. Todos los derechos reservados.</p>
+        <div class="flex flex-wrap items-center justify-center gap-4 font-semibold">
+          <button onclick="openLegalModal('salud')" class="hover:text-white cursor-pointer">Aviso de Salud</button>
+          <button onclick="openLegalModal('legal')" class="hover:text-white cursor-pointer">Aviso Legal</button>
+          <button onclick="openLegalModal('privacidad')" class="hover:text-white cursor-pointer">Privacidad (RGPD)</button>
+          <button onclick="openLegalModal('cookies')" class="hover:text-white cursor-pointer">Cookies</button>
+          <button onclick="openLegalModal('terminos')" class="hover:text-white cursor-pointer">Términos</button>
+          <button onclick="openCreatorConfigModal()" class="text-brand-orange hover:underline cursor-pointer">⚙️ Configurar Pagos y Vídeos</button>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <!-- MODAL PRIVADO DE PRODUCCIÓN, VÍDEOS Y PAGOS (EXCLUSIVO ÁLEX & D4RIXZ) -->
+  <div id="creatorConfigModal" class="hidden fixed inset-0 z-50 bg-slate-950/75 backdrop-blur-sm flex items-center justify-center p-4 overflow-y-auto">
+    <div class="bg-white rounded-3xl max-w-3xl w-full border border-slate-200 shadow-2xl overflow-hidden my-auto max-h-[90vh] flex flex-col">
+      <div class="bg-brand-navy text-white p-5 flex items-center justify-between shrink-0">
+        <div>
+          <span class="text-[10px] font-display font-extrabold uppercase tracking-wider text-brand-orange">Acceso Privado · Equipo Álex & D4rixz</span>
+          <h3 class="font-display font-extrabold text-base sm:text-lg">⚙️ Panel Privado de Producción, Vídeos y Pagos</h3>
+        </div>
+        <button onclick="document.getElementById('creatorConfigModal').classList.add('hidden')" class="w-8 h-8 rounded-full bg-white/10 hover:bg-white/20 flex items-center justify-center text-white font-bold cursor-pointer">✕</button>
+      </div>
+
+      <!-- Bloqueo por PIN -->
+      <div id="creatorPinGate" class="p-6 sm:p-8 text-center space-y-4">
+        <div class="w-12 h-12 rounded-2xl bg-brand-navy text-brand-orange font-display font-black text-xl flex items-center justify-center mx-auto shadow">
+          🔒
+        </div>
+        <div class="max-w-sm mx-auto">
+          <h4 class="font-display font-black text-lg text-brand-navy">Zona Privada de Creadores</h4>
+          <p class="text-xs text-slate-600 mt-1">
+            Introduce vuestro PIN de equipo (por defecto <code class="px-1.5 py-0.5 rounded bg-slate-100 font-bold text-brand-navy">3030</code>, puedes cambiarlo dentro) para gestionar los 16 vídeos y enlaces de cobro.
+          </p>
+        </div>
+        <form onsubmit="unlockCreatorPanel(event)" class="max-w-xs mx-auto flex gap-2">
+          <input id="creatorPinInput" type="password" inputmode="numeric" required placeholder="PIN (ej. 3030)" class="flex-1 px-4 py-2.5 rounded-xl border border-slate-300 text-center font-mono text-sm font-bold focus:outline-none focus:border-brand-orange" />
+          <button type="submit" class="px-5 py-2.5 rounded-xl bg-brand-orange hover:bg-brand-orangeDark text-white font-display font-extrabold text-xs uppercase tracking-wider cursor-pointer">
+            Entrar
+          </button>
+        </form>
+      </div>
+
+      <!-- Cuerpo del Panel Privado -->
+      <div id="creatorPanelBody" class="hidden p-5 sm:p-6 overflow-y-auto space-y-6 text-xs">
+        <div class="space-y-3">
+          <div class="flex flex-wrap items-center justify-between gap-2">
+            <div>
+              <h4 class="font-display font-extrabold text-sm text-brand-navy">🎬 1. Gestor Central de Vídeos (Los 16 Clips de los 3 Primeros Meses)</h4>
+              <p class="text-[11px] text-slate-500">Al pegar la URL o seleccionar el archivo de un clip, se actualiza automáticamente en todos los días y sesiones que lo usan.</p>
+            </div>
+            <span id="clipsUploadedCounter" class="px-3 py-1 rounded-full bg-emerald-50 text-emerald-700 border border-emerald-200 font-display font-extrabold text-[11px]">
+              0 / 16 vídeos cargados
+            </span>
+          </div>
+
+          <div class="rounded-2xl bg-slate-50 border border-slate-200 p-3 flex flex-col sm:flex-row sm:items-center justify-between gap-2 text-[11px] text-slate-600">
+            <span><strong>Truco rápido:</strong> Si subís los MP4 a una carpeta <code class="bg-white px-1.5 py-0.5 rounded border border-slate-200 font-bold text-brand-navy">/clips/</code> en vuestro hosting, pulsa este botón para rellenar las 16 rutas de golpe:</span>
+            <button type="button" onclick="autofillRelativeClipPaths()" class="px-3 py-1.5 rounded-xl bg-brand-navy hover:bg-brand-navyLight text-white font-display font-extrabold text-[11px] shrink-0 cursor-pointer">
+              Autocompletar /clips/*.mp4
+            </button>
+          </div>
+
+          <div id="adminClipsManagerList" class="space-y-4 max-h-80 overflow-y-auto pr-1"></div>
+
+          <div class="flex flex-wrap items-center justify-between gap-2 pt-1">
+            <button type="button" onclick="saveAllAdminClips()" class="px-5 py-2.5 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white font-display font-extrabold text-xs cursor-pointer shadow-sm">
+              ✓ Aplicar Todos los Vídeos a la Web
+            </button>
+            <button type="button" onclick="exportProductionHtml()" class="px-5 py-2.5 rounded-xl bg-brand-orange hover:bg-brand-orangeDark text-white font-display font-extrabold text-xs cursor-pointer shadow-sm">
+              ⬇ Descargar index.html Definitivo con Vídeos y Pagos
+            </button>
+          </div>
+        </div>
+
+        <form onsubmit="savePaymentLinks(event)" class="pt-4 border-t border-slate-200 space-y-3">
+          <h4 class="font-display font-extrabold text-sm text-brand-navy">💳 2. Enlaces reales de cobro (Stripe, Hotmart o Lemon Squeezy)</h4>
+          <div class="grid grid-cols-1 sm:grid-cols-3 gap-2.5">
+            <div>
+              <label class="block font-bold text-slate-700 mb-1">Reto 30 Días (19 €)</label>
+              <input id="inputLinkReto30" type="url" placeholder="https://buy.stripe.com/..." class="w-full px-3 py-2 rounded-xl border border-slate-300" />
+            </div>
+            <div>
+              <label class="block font-bold text-slate-700 mb-1">Pack Completo (29 €)</label>
+              <input id="inputLinkPack" type="url" placeholder="https://buy.stripe.com/..." class="w-full px-3 py-2 rounded-xl border border-slate-300" />
+            </div>
+            <div>
+              <label class="block font-bold text-slate-700 mb-1">Club Mensual (12 €/mes)</label>
+              <input id="inputLinkClub" type="url" placeholder="https://buy.stripe.com/..." class="w-full px-3 py-2 rounded-xl border border-slate-300" />
+            </div>
+          </div>
+          <button type="submit" class="px-4 py-2 rounded-xl bg-brand-navy hover:bg-brand-navyLight text-white font-display font-extrabold cursor-pointer">
+            Guardar Enlaces de Cobro
+          </button>
+        </form>
+
+        <div class="pt-4 border-t border-slate-200 space-y-2">
+          <h4 class="font-display font-extrabold text-sm text-brand-navy">🔗 3. URLs de Éxito Post-Pago (para configurar en Stripe/Hotmart)</h4>
+          <div class="grid grid-cols-1 gap-1.5 text-[11px] font-mono bg-slate-50 p-3 rounded-2xl border border-slate-200 text-slate-700">
+            <div class="flex items-center justify-between gap-2">
+              <span class="truncate" id="thankUrlReto">?acceso=reto30</span>
+              <button type="button" onclick="copyTextValue(document.getElementById('thankUrlReto').textContent)" class="px-2 py-1 rounded bg-white border border-slate-200 font-sans font-bold text-brand-navy hover:bg-slate-100 cursor-pointer shrink-0">Copiar</button>
+            </div>
+            <div class="flex items-center justify-between gap-2">
+              <span class="truncate" id="thankUrlPack">?acceso=pack</span>
+              <button type="button" onclick="copyTextValue(document.getElementById('thankUrlPack').textContent)" class="px-2 py-1 rounded bg-white border border-slate-200 font-sans font-bold text-brand-navy hover:bg-slate-100 cursor-pointer shrink-0">Copiar</button>
+            </div>
+            <div class="flex items-center justify-between gap-2">
+              <span class="truncate" id="thankUrlClub">?acceso=club</span>
+              <button type="button" onclick="copyTextValue(document.getElementById('thankUrlClub').textContent)" class="px-2 py-1 rounded bg-white border border-slate-200 font-sans font-bold text-brand-navy hover:bg-slate-100 cursor-pointer shrink-0">Copiar</button>
+            </div>
+          </div>
+        </div>
+
+        <div class="pt-4 border-t border-slate-200 grid grid-cols-1 sm:grid-cols-2 gap-4">
+          <div class="space-y-2">
+            <h4 class="font-display font-extrabold text-sm text-brand-navy">📊 4. Enlaces UTM (Shorts, TikTok, Reels)</h4>
+            <div class="space-y-1.5 text-[11px] font-mono bg-slate-50 p-3 rounded-2xl border border-slate-200 text-slate-700">
+              <div class="flex items-center justify-between gap-2">
+                <span class="truncate" id="utmYoutube">?utm_source=youtube&utm_medium=shorts&utm_campaign=reto30</span>
+                <button type="button" onclick="copyTextValue(document.getElementById('utmYoutube').textContent)" class="px-2 py-1 rounded bg-white border border-slate-200 font-sans font-bold text-brand-navy cursor-pointer shrink-0">Copiar</button>
+              </div>
+              <div class="flex items-center justify-between gap-2">
+                <span class="truncate" id="utmTiktok">?utm_source=tiktok&utm_medium=video&utm_campaign=reto30</span>
+                <button type="button" onclick="copyTextValue(document.getElementById('utmTiktok').textContent)" class="px-2 py-1 rounded bg-white border border-slate-200 font-sans font-bold text-brand-navy cursor-pointer shrink-0">Copiar</button>
+              </div>
+              <div class="flex items-center justify-between gap-2">
+                <span class="truncate" id="utmInstagram">?utm_source=instagram&utm_medium=reels&utm_campaign=reto30</span>
+                <button type="button" onclick="copyTextValue(document.getElementById('utmInstagram').textContent)" class="px-2 py-1 rounded bg-white border border-slate-200 font-sans font-bold text-brand-navy cursor-pointer shrink-0">Copiar</button>
+              </div>
+            </div>
+          </div>
+
+          <div class="space-y-2 flex flex-col justify-between">
+            <div>
+              <h4 class="font-display font-extrabold text-sm text-brand-navy">🔐 5. Seguridad del Panel y Leads</h4>
+              <p class="text-[11px] text-slate-600 mt-1">Correos captados en Mini-Reto: <strong id="leadsCountLabel">0</strong></p>
+              <div class="flex items-center gap-2 mt-2">
+                <input id="newCreatorPinInput" type="text" maxlength="8" placeholder="Nuevo PIN (ej. 4821)" class="px-3 py-1.5 rounded-xl border border-slate-300 text-xs font-mono w-36" />
+                <button type="button" onclick="updateCreatorPin()" class="px-3 py-1.5 rounded-xl bg-slate-200 hover:bg-slate-300 font-display font-bold text-brand-navy cursor-pointer">Cambiar PIN</button>
+              </div>
+            </div>
+            <div class="flex flex-wrap gap-2 pt-2">
+              <button type="button" onclick="exportLeadsCsv()" class="px-4 py-2 rounded-xl bg-slate-100 hover:bg-slate-200 text-xs font-display font-extrabold text-brand-navy cursor-pointer transition">
+                ⬇ Exportar Leads (.CSV)
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- MODAL DE TEXTOS LEGALES -->
+  <div id="legalModal" class="hidden fixed inset-0 z-50 bg-slate-950/75 backdrop-blur-sm flex items-center justify-center p-4 overflow-y-auto">
+    <div class="bg-white rounded-3xl max-w-2xl w-full border border-slate-200 shadow-2xl overflow-hidden my-auto max-h-[85vh] flex flex-col">
+      <div class="bg-brand-navy text-white p-5 flex items-center justify-between shrink-0">
+        <h3 id="legalModalTitle" class="font-display font-extrabold text-lg">Aviso Legal</h3>
+        <button onclick="closeLegalModal()" class="w-8 h-8 rounded-full bg-white/10 hover:bg-white/20 flex items-center justify-center text-white font-bold cursor-pointer">✕</button>
+      </div>
+      <div id="legalModalBody" class="p-5 sm:p-6 overflow-y-auto text-xs sm:text-sm text-slate-600 leading-relaxed space-y-3"></div>
+    </div>
+  </div>
+
+  <script>
+    // =========================================================================
+    // CONEXIÓN CON SUPABASE (PROYECTO DE ÁLVARO)
+    // =========================================================================
+    const SUPABASE_URL = 'https://thpfjqptwtnpjuzprzca.supabase.co';
+    const SUPABASE_ANON_KEY = 'sb_publishable_i9Tqy2EO0IGWdEUv_ZnJtQ_zmfRWQhq';
+    const supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+
+    let currentSupabaseUser = null;
+    let authActionMode = 'login';
+
+    function openStudentAuthModal() {
+      document.getElementById('authModalFeedback').classList.add('hidden');
+      document.getElementById('studentAuthModal').classList.remove('hidden');
+    }
+
+    function closeStudentAuthModal() {
+      document.getElementById('studentAuthModal').classList.add('hidden');
+    }
+
+    function showAuthFeedback(msg, isError = true) {
+      const box = document.getElementById('authModalFeedback');
+      box.textContent = msg;
+      box.className = isError
+        ? 'p-3 rounded-xl text-xs font-semibold bg-red-50 text-red-700 border border-red-200'
+        : 'p-3 rounded-xl text-xs font-semibold bg-emerald-50 text-emerald-800 border border-emerald-200';
+      box.classList.remove('hidden');
+    }
+
+    async function handleStudentAuthSubmit(e) {
+      e.preventDefault();
+      const email = document.getElementById('authStudentEmail').value.trim();
+      const password = document.getElementById('authStudentPassword').value;
+      const nombre = document.getElementById('authStudentName').value.trim();
+
+      if (authActionMode === 'signup') {
+        const { data, error } = await supabaseClient.auth.signUp({ email, password });
+        if (error) return showAuthFeedback('Error al crear cuenta: ' + error.message, true);
+
+        if (data.user) {
+          currentSupabaseUser = data.user;
+          await supabaseClient.from('perfiles_alumnos').upsert({
+            id: data.user.id,
+            nombre: nombre || email.split('@')[0],
+            plan_activo: activePlan,
+            dias_completados: completedDays,
+            club_completado: clubCompleted
+          });
+          if (data.session) {
+            closeStudentAuthModal();
+            await syncProgressFromSupabase(data.user);
+            switchAppView('student');
+            showToast('🎉 ¡Cuenta creada! Bienvenido al Área de Alumno.');
+          } else {
+            showAuthFeedback('Cuenta creada. Revisa tu correo para confirmarla (o desactiva "Confirm email" en Supabase).', false);
+          }
+        }
+      } else {
+        const { data, error } = await supabaseClient.auth.signInWithPassword({ email, password });
+        if (error) return showAuthFeedback('Error al entrar: ' + error.message, true);
+
+        currentSupabaseUser = data.user;
+        closeStudentAuthModal();
+        await syncProgressFromSupabase(data.user);
+        switchAppView('student');
+        showToast('✓ Sesión iniciada y progreso sincronizado.');
+      }
+    }
+
+    async function syncProgressFromSupabase(user) {
+      if (!user) return;
+      currentSupabaseUser = user;
+      const emailBadge = document.getElementById('studentUserEmailBadge');
+      if (emailBadge) emailBadge.textContent = user.email;
+
+      const { data, error } = await supabaseClient
+        .from('perfiles_alumnos')
+        .select('*')
+        .eq('id', user.id)
+        .maybeSingle();
+
+      if (!error && data) {
+        if (data.dias_completados && typeof data.dias_completados === 'object') {
+          completedDays = { ...completedDays, ...data.dias_completados };
+          localStorage.setItem(STORAGE_KEYS.completedDays, JSON.stringify(completedDays));
+        }
+        if (data.club_completado && typeof data.club_completado === 'object') {
+          clubCompleted = { ...clubCompleted, ...data.club_completado };
+          localStorage.setItem(STORAGE_KEYS.clubCompleted, JSON.stringify(clubCompleted));
+        }
+        if (data.plan_activo) {
+          activePlan = data.plan_activo;
+          localStorage.setItem(STORAGE_KEYS.activePlan, activePlan);
+        }
+      } else if (!error && !data) {
+        // Si es la primera vez que entra este usuario, creamos su fila en perfiles_alumnos
+        await syncProgressToSupabase();
+      }
+      updateGlobalStreakUI();
+      updateHeaderSessionIndicator();
+    }
+
+    async function syncProgressToSupabase() {
+      if (!currentSupabaseUser) return;
+      await supabaseClient
+        .from('perfiles_alumnos')
+        .upsert({
+          id: currentSupabaseUser.id,
+          plan_activo: activePlan,
+          dias_completados: completedDays,
+          club_completado: clubCompleted
+        });
+    }
+
+    async function logoutStudentSupabase() {
+      await supabaseClient.auth.signOut();
+      currentSupabaseUser = null;
+      switchAppView('landing');
+      showToast('Sesión cerrada.');
+    }
+
+    // =========================================================================
+    // CONFIGURACIÓN DE ALMACENAMIENTO Y CONSTANTES BASE
+    // =========================================================================
+    const STORAGE_KEYS = {
+      completedDays: 'm30d_completed_days_v1',
+      dayLogs: 'm30d_day_logs_v1',
+      clubCompleted: 'm30d_club_completed_v1',
+      freeEmail: 'm30d_free_email_v1',
+      leadsList: 'm30d_leads_list_v1',
+      activePlan: 'm30d_active_plan_v1',
+      hasUnlockedAccess: 'm30d_unlocked_v1',
+      paymentLinks: 'm30d_payment_links_v1',
+      utmParams: 'm30d_utm_params_v1',
+      customClips: 'm30d_custom_clips_v1'
+    };
+
+    const DEFAULT_PAYMENT_LINKS = {
+      reto30: 'https://buy.stripe.com/4gM7sE8XP01Ceb23rHfUQ03',
+      packCompleto: 'https://buy.stripe.com/8x2dR24Hz29K4Asd2hfUQ02',
+      clubMensual: 'https://buy.stripe.com/28E6oAei97u42sk0fvfUQ01'
+    };
+
+    const DEFAULT_CLIP_URLS = {
+      neck: '',
+      thorax: '',
+      lumbar: '',
+      hip: '',
+      ankle: '',
+      strength: '',
+      m2_push: '',
+      m2_row: '',
+      m2_squat: '',
+      m2_plank: '',
+      m2_circuit: '',
+      m3_desk: '',
+      m3_hipreset: '',
+      m3_express7: '',
+      m3_scapula: '',
+      m3_night: ''
+    };
+
+    const ADMIN_PIN_STORAGE = 'm30d_creator_pin_v1';
+    const DEFAULT_CREATOR_PIN = '3030';
+    let creatorPanelUnlocked = true;
+
+    const ADMIN_CLIPS_CATALOG = [
+      {
+        group: 'Mes 1 · Reto 30 Días (6 clips base)',
+        items: [
+          { id: 'neck', name: '1. Descarga cervical y trapecios', impact: 'Días 1, 7, 8, 14, 16, 23, 29, 30 + Prueba Gratis Día 1' },
+          { id: 'thorax', name: '2. Apertura torácica y ángeles en pared', impact: 'Días 2, 6, 9, 13, 14, 15, 20, 21, 22, 23, 27, 30 + Prueba Día 2' },
+          { id: 'lumbar', name: '3. Rotación lumbar tumbado y gato-camello', impact: 'Días 4, 7, 11, 18, 21, 24, 26, 29, 30 + Prueba Día 3' },
+          { id: 'hip', name: '4. Zancada baja y desbloqueo de cadera', impact: 'Días 3, 10, 17, 22, 24, 26, 29' },
+          { id: 'ankle', name: '5. Dorsiflexión de tobillo en pared', impact: 'Días 5, 12, 19, 24, 25, 30' },
+          { id: 'strength', name: '6. Sentadilla controlada y postura', impact: 'Días 15, 21, 25 + Biblioteca Base' }
+        ]
+      },
+      {
+        group: 'Mes 2 · Club Fuerza en Casa sin Material (5 clips)',
+        items: [
+          { id: 'm2_push', name: '7. Flexiones inclinadas en pared o mesa', impact: 'Mes 2 · Sesión 1 (Empuje) en Semanas 1, 2, 3 y 4' },
+          { id: 'm2_row', name: '8. Remo escapular / retracción', impact: 'Mes 2 · Sesión 2 (Tracción) en Semanas 1, 2, 3 y 4' },
+          { id: 'm2_squat', name: '9. Sentadilla a silla + puente glúteo', impact: 'Mes 2 · Sesión 3 (Pierna) en Semanas 1, 2, 3 y 4' },
+          { id: 'm2_plank', name: '10. Plancha frontal de estabilidad', impact: 'Mes 2 · Sesión 4 (Core) en Semanas 1, 2, 3 y 4' },
+          { id: 'm2_circuit', name: '11. Circuito combinado fuerza base', impact: 'Mes 2 · Sesión 5 (Full Body) en Semanas 1, 2, 3 y 4' }
+        ]
+      },
+      {
+        group: 'Mes 3 · Club Rutinas Exprés y Anti-Rigidez (5 clips)',
+        items: [
+          { id: 'm3_desk', name: '12. Rescate cervical y torácico de 8 min', impact: 'Mes 3 · Sesión 1 (Oficina) en Semanas 1, 2, 3 y 4' },
+          { id: 'm3_hipreset', name: '13. Reset lumbar y caderas sentado', impact: 'Mes 3 · Sesión 2 (Cadera) en Semanas 1, 2, 3 y 4' },
+          { id: 'm3_express7', name: '14. Protocolo exprés de 7 minutos', impact: 'Mes 3 · Sesión 3 (Exprés 7m) en Semanas 1, 2, 3 y 4' },
+          { id: 'm3_scapula', name: '15. Alineación escapular en pared', impact: 'Mes 3 · Sesión 4 (Postura) en Semanas 1, 2, 3 y 4' },
+          { id: 'm3_night', name: '16. Flujo nocturno descarga total', impact: 'Mes 3 · Sesión 5 (Descarga) en Semanas 1, 2, 3 y 4' }
+        ]
+      }
+    ];
+
+    let customClipUrls = JSON.parse(localStorage.getItem(STORAGE_KEYS.customClips) || JSON.stringify(DEFAULT_CLIP_URLS));
+
+    // =========================================================================
+    // MOTOR DE CLIPS CORTOS INDEPENDIENTES
+    // =========================================================================
+    const CLIP_META = {
+      neck: { title: 'M1 · Descarga Cervical y Trapecios', duration: '0:24', style: 'neck', phases: ['INHALA AL CENTRO', 'INCLINA SUAVE DERECHA', 'PAUSA Y RELAJA HOMBRO', 'INCLINA SUAVE IZQUIERDA'] },
+      thorax: { title: 'M1 · Apertura Torácica en Pared', duration: '0:28', style: 'thorax', phases: ['CADERA FIJA EN PARED', 'ABRE BRAZO EN ARCO', 'SIGUE MANO CON MIRADA', 'CIERRA CONTROLADO'] },
+      lumbar: { title: 'M1 · Rotación Lumbar Controlada', duration: '0:30', style: 'lumbar', phases: ['HOMBROS PEGADOS AL SUELO', 'GIRO SUAVE A DERECHA', 'PAUSA 2s RESPIRANDO', 'GIRO SUAVE A IZQUIERDA'] },
+      hip: { title: 'M1 · Desbloqueo de Cadera y Flexores', duration: '0:26', style: 'hip', phases: ['RETROVERSIÓN PÉLVICA', 'ACTIVA GLÚTEO TRASERO', 'AVANZA 3 CM SUAVE', 'MANTÉN ESPALDA ALTA'] },
+      ankle: { title: 'M1 · Dorsiflexión de Tobillo en Pared', duration: '0:22', style: 'ankle', phases: ['TALÓN PEGADO AL SUELO', 'RODILLA HACIA LA PARED', 'TOQUE SUAVE SIN REBOTE', 'REGRESA CONTROLADO'] },
+      strength: { title: 'M1 · Sentadilla y Control Postural', duration: '0:25', style: 'strength', phases: ['PECHO ALTO Y MIRADA AL FRENTE', 'BAJA CONTROLADO EN 3s', 'PAUSA FIRME ABAJO', 'SUBE EMPUJANDO TALONES'] },
+      m2_push: { title: 'M2 · Flexiones Inclinadas Controladas', duration: '0:25', style: 'pushup', phases: ['MANOS FIRMES EN MESA', 'BAJA PECHO EN 3 SEG', 'CODOS A 45 GRADOS', 'EMPUJA SIN HUNDIR CADERA'] },
+      m2_row: { title: 'M2 · Remo Escapular / Retracción', duration: '0:24', style: 'thorax', phases: ['PECHO ABIERTO Y ALTO', 'JUNTA ESCÁPULAS ATRÁS', 'PAUSA 2 SEGUNDOS', 'REGRESA CONTROLADO'] },
+      m2_squat: { title: 'M2 · Sentadilla a Silla + Puente Glúteo', duration: '0:28', style: 'strength', phases: ['CADERA ATRÁS CONTROLADA', 'TOQUE SUAVE EN SILLA', 'EMPUJA CON TALONES', 'ACTIVA GLÚTEO ARRIBA'] },
+      m2_plank: { title: 'M2 · Plancha Frontal de Estabilidad', duration: '0:30', style: 'plank', phases: ['ANTEBRAZOS BAJO HOMBROS', 'ACTIVA ABDOMEN Y GLÚTEO', 'ESPALDA NEUTRA RECTA', 'RESPIRA SIN BLOQUEAR'] },
+      m2_circuit: { title: 'M2 · Circuito Combinado Fuerza Base', duration: '0:32', style: 'strength', phases: ['TRANSICIÓN FLUIDA', 'MANTÉN RITMO CONSTANTE', 'TÉCNICA LIMPIA SIEMPRE', 'EXHALA EN EL ESFUERZO'] },
+      m3_desk: { title: 'M3 · Rescate Cervical y Torácico 8m', duration: '0:22', style: 'neck', phases: ['SUELTA TENSIÓN DE HOMBROS', 'RETRACCIÓN CERVICAL', 'ABRE PECHO SUAVE', 'RESPIRACIÓN PROFUNDA'] },
+      m3_hipreset: { title: 'M3 · Reset Lumbar y Caderas Sentado', duration: '0:26', style: 'hip', phases: ['EXTIENDE FLEXOR CADERA', 'GLÚTEO ACTIVO ATRÁS', 'SIN ARQUEAR LUMBAR', 'CAMBIO LENTO DE LADO'] },
+      m3_express7: { title: 'M3 · Protocolo Exprés 7 Minutos', duration: '0:20', style: 'lumbar', phases: ['ACTIVACIÓN RÁPIDA', 'MOVIMIENTO FLUIDO', 'CERO IMPACTO ARTICULAR', 'RACHA MANTENIDA'] },
+      m3_scapula: { title: 'M3 · Alineación Escapular en Pared', duration: '0:25', style: 'thorax', phases: ['ESPALDA PEGADA A PARED', 'DESLIZA BRAZOS EN W-Y', 'COSTILLAS CONTROLADAS', 'BAJA LENTO SIN TENSIÓN'] },
+      m3_night: { title: 'M3 · Flujo Nocturno Descarga Total', duration: '0:28', style: 'lumbar', phases: ['INHALA EN 4 SEGUNDOS', 'EXHALA LARGO EN 6 SEG', 'SUELTA ZONA LUMBAR', 'RELAJA MANDÍBULA'] }
+    };
+
+    function getClipMeta(clipId, customTitle) {
+      if (CLIP_META[clipId]) return CLIP_META[clipId];
+      const styleMap = ['neck', 'thorax', 'lumbar', 'hip', 'ankle', 'strength', 'plank', 'pushup'];
+      let hash = 0;
+      for (let i = 0; i < clipId.length; i++) hash = (hash * 31 + clipId.charCodeAt(i)) % 997;
+      return {
+        title: customTitle || `Clip IA · ${clipId}`,
+        duration: '0:25',
+        style: styleMap[hash % styleMap.length],
+        phases: ['POSICIÓN INICIAL LIMPIA', 'EJECUCIÓN CONTROLADA', 'PAUSA DE CONTROL 2s', 'REGRESO SUAVE']
+      };
+    }
+
+    function renderClipPlayerHTML(clipId, compact = false, customTitle = '') {
+      const meta = getClipMeta(clipId, customTitle);
+      const url = (customClipUrls[clipId] || '').trim();
+      const isPublicClip = url.startsWith('http') || url.startsWith('./') || url.startsWith('/') || url.startsWith('clips/');
+      const heightClass = compact ? 'h-32' : 'h-48 sm:h-52';
+
+      if (url) {
+        return `
+          <div class="relative w-full ${heightClass} rounded-2xl overflow-hidden bg-slate-950 border border-slate-800 group">
+            <video src="${url}" class="w-full h-full object-cover" autoplay loop muted playsinline controls></video>
+            <span class="absolute top-2 left-2 px-2 py-0.5 rounded-md ${isPublicClip ? 'bg-brand-orange' : 'bg-blue-600'} text-white font-display font-extrabold text-[10px] shadow">
+              ${isPublicClip ? 'CLIP IA · ' + meta.duration : 'VISTA PREVIA LOCAL'}
+            </span>
+          </div>
+        `;
+      }
+
+      return `
+        <div class="relative w-full ${heightClass} rounded-2xl overflow-hidden bg-gradient-to-b from-slate-900 to-slate-950 border border-slate-800 flex flex-col justify-between p-2.5 text-white select-none">
+          <div class="flex items-center justify-between gap-1 text-[10px] z-10">
+            <span class="inline-flex items-center gap-1 px-2 py-0.5 rounded-md bg-white/10 text-orange-300 font-display font-extrabold">
+              <span class="w-1.5 h-1.5 rounded-full bg-brand-orange live-dot"></span>
+              CLIP IA · ${meta.duration}
+            </span>
+            <span class="text-[9px] text-slate-400 font-mono">${clipId}</span>
+          </div>
+          <canvas data-clip-key="${clipId}" data-clip-style="${meta.style}" class="alex-clip-canvas w-full flex-1 my-1 rounded-xl"></canvas>
+          <div class="flex items-center justify-between gap-2 text-[10px] z-10">
+            <span class="alex-clip-phase font-display font-extrabold text-emerald-400 tracking-wide truncate">${meta.phases[0]}</span>
+            <div class="w-16 h-1.5 bg-slate-800 rounded-full overflow-hidden shrink-0">
+              <div class="alex-clip-bar h-full bg-brand-orange" style="width: 25%"></div>
+            </div>
+          </div>
+        </div>
+      `;
+    }
+
+    function startAlexClipEngine() {
+      function drawFrame(now) {
+        const t = now / 1000;
+        const canvases = document.querySelectorAll('.alex-clip-canvas');
+        canvases.forEach(canvas => {
+          const rect = canvas.getBoundingClientRect();
+          if (rect.width === 0 || rect.height === 0) return;
+          const dpr = Math.min(window.devicePixelRatio || 1, 2);
+          const targetW = Math.floor(rect.width * dpr);
+          const targetH = Math.floor(rect.height * dpr);
+          if (canvas.width !== targetW || canvas.height !== targetH) {
+            canvas.width = targetW;
+            canvas.height = targetH;
+          }
+
+          const ctx = canvas.getContext('2d');
+          ctx.save();
+          ctx.scale(dpr, dpr);
+          const w = rect.width;
+          const h = rect.height;
+
+          ctx.fillStyle = '#0f172a';
+          ctx.fillRect(0, 0, w, h);
+
+          ctx.strokeStyle = 'rgba(148, 163, 184, 0.12)';
+          ctx.lineWidth = 1;
+          for (let gx = 20; gx < w; gx += 24) {
+            ctx.beginPath(); ctx.moveTo(gx, 0); ctx.lineTo(gx, h); ctx.stroke();
+          }
+          for (let gy = 20; gy < h; gy += 24) {
+            ctx.beginPath(); ctx.moveTo(0, gy); ctx.lineTo(w, gy); ctx.stroke();
+          }
+
+          ctx.fillStyle = '#1e3a8a';
+          ctx.beginPath();
+          ctx.roundRect(w * 0.12, h * 0.82, w * 0.76, 8, 4);
+          ctx.fill();
+
+          const clipId = canvas.dataset.clipKey || 'neck';
+          const key = canvas.dataset.clipStyle || 'neck';
+          const cycle = (t * 0.35) % 1;
+          const wave = Math.sin(cycle * Math.PI * 2);
+          const pulse = (Math.sin(cycle * Math.PI * 2 - Math.PI / 2) + 1) / 2;
+
+          const wrapper = canvas.parentElement;
+          if (wrapper) {
+            const meta = getClipMeta(clipId);
+            const phaseIdx = Math.min(3, Math.floor(cycle * 4));
+            const phaseEl = wrapper.querySelector('.alex-clip-phase');
+            const barEl = wrapper.querySelector('.alex-clip-bar');
+            if (phaseEl && phaseEl.textContent !== meta.phases[phaseIdx]) {
+              phaseEl.textContent = meta.phases[phaseIdx];
+            }
+            if (barEl) barEl.style.width = `${Math.round(cycle * 100)}%`;
+          }
+
+          const cx = w * 0.5;
+          const cy = h * 0.54;
+
+          if (key === 'neck') {
+            ctx.fillStyle = '#f97316';
+            ctx.beginPath();
+            ctx.roundRect(cx - 26, cy + 8, 52, 34, 14);
+            ctx.fill();
+            ctx.save();
+            ctx.translate(cx, cy + 6);
+            ctx.rotate(wave * 0.28);
+            ctx.fillStyle = '#fed7aa';
+            ctx.beginPath(); ctx.arc(0, -18, 17, 0, Math.PI * 2); ctx.fill();
+            ctx.fillStyle = '#5c3a21';
+            ctx.beginPath(); ctx.arc(0, -22, 17, Math.PI, Math.PI * 2); ctx.fill();
+            ctx.fillStyle = '#0f172a';
+            ctx.beginPath(); ctx.arc(-5, -18, 2, 0, Math.PI * 2); ctx.arc(5, -18, 2, 0, Math.PI * 2); ctx.fill();
+            ctx.restore();
+          } else if (key === 'thorax') {
+            ctx.fillStyle = '#64748b';
+            ctx.fillRect(cx - 46, h * 0.14, 6, h * 0.68);
+            ctx.fillStyle = '#f97316';
+            ctx.beginPath(); ctx.roundRect(cx - 24, cy - 8, 22, 42, 9); ctx.fill();
+            ctx.fillStyle = '#fed7aa';
+            ctx.beginPath(); ctx.arc(cx - 13, cy - 20, 11, 0, Math.PI * 2); ctx.fill();
+            ctx.save();
+            ctx.translate(cx - 12, cy - 2);
+            ctx.rotate(-0.3 - pulse * 1.1);
+            ctx.strokeStyle = '#fb923c';
+            ctx.lineWidth = 7;
+            ctx.lineCap = 'round';
+            ctx.beginPath(); ctx.moveTo(0, 0); ctx.lineTo(38, 0); ctx.stroke();
+            ctx.restore();
+          } else if (key === 'lumbar') {
+            ctx.fillStyle = '#fed7aa';
+            ctx.beginPath(); ctx.arc(cx - 46, h * 0.72, 10, 0, Math.PI * 2); ctx.fill();
+            ctx.fillStyle = '#f97316';
+            ctx.beginPath(); ctx.roundRect(cx - 34, h * 0.68, 42, 13, 6); ctx.fill();
+            ctx.save();
+            ctx.translate(cx + 10, h * 0.73);
+            ctx.rotate(wave * 0.42);
+            ctx.strokeStyle = '#94a3b8';
+            ctx.lineWidth = 8;
+            ctx.lineCap = 'round';
+            ctx.lineJoin = 'round';
+            ctx.beginPath(); ctx.moveTo(0, 0); ctx.lineTo(18, -26); ctx.lineTo(36, 0); ctx.stroke();
+            ctx.restore();
+          } else if (key === 'hip') {
+            const shift = pulse * 14;
+            ctx.strokeStyle = '#64748b';
+            ctx.lineWidth = 8;
+            ctx.lineCap = 'round';
+            ctx.lineJoin = 'round';
+            ctx.beginPath(); ctx.moveTo(cx - 6 + shift, cy + 8); ctx.lineTo(cx - 28, h * 0.8); ctx.lineTo(cx - 46, h * 0.8); ctx.stroke();
+            ctx.beginPath(); ctx.moveTo(cx - 2 + shift, cy + 8); ctx.lineTo(cx + 24 + shift * 0.5, cy + 8); ctx.lineTo(cx + 24 + shift * 0.5, h * 0.8); ctx.stroke();
+            ctx.fillStyle = '#f97316';
+            ctx.beginPath(); ctx.roundRect(cx - 12 + shift, cy - 22, 18, 32, 8); ctx.fill();
+            ctx.fillStyle = '#fed7aa';
+            ctx.beginPath(); ctx.arc(cx - 3 + shift, cy - 32, 10, 0, Math.PI * 2); ctx.fill();
+          } else if (key === 'ankle') {
+            ctx.fillStyle = '#64748b';
+            ctx.fillRect(cx + 34, h * 0.16, 6, h * 0.66);
+            const kneeX = cx + 6 + pulse * 22;
+            ctx.strokeStyle = '#94a3b8';
+            ctx.lineWidth = 9;
+            ctx.lineCap = 'round';
+            ctx.lineJoin = 'round';
+            ctx.beginPath(); ctx.moveTo(cx - 14, cy - 18); ctx.lineTo(kneeX, cy + 12); ctx.lineTo(cx + 2, h * 0.79); ctx.stroke();
+            ctx.fillStyle = '#f97316';
+            ctx.beginPath(); ctx.roundRect(cx - 2, h * 0.75, 24, 7, 3); ctx.fill();
+          } else if (key === 'plank') {
+            const lift = wave * 2;
+            ctx.strokeStyle = '#94a3b8';
+            ctx.lineWidth = 8;
+            ctx.lineCap = 'round';
+            ctx.beginPath(); ctx.moveTo(cx - 42, h * 0.78); ctx.lineTo(cx - 10, h * 0.64 + lift); ctx.stroke();
+            ctx.fillStyle = '#f97316';
+            ctx.beginPath(); ctx.roundRect(cx - 12, h * 0.56 + lift, 42, 14, 7); ctx.fill();
+            ctx.strokeStyle = '#fb923c';
+            ctx.lineWidth = 7;
+            ctx.beginPath(); ctx.moveTo(cx + 24, h * 0.64 + lift); ctx.lineTo(cx + 24, h * 0.78); ctx.lineTo(cx + 38, h * 0.78); ctx.stroke();
+            ctx.fillStyle = '#fed7aa';
+            ctx.beginPath(); ctx.arc(cx + 38, h * 0.56 + lift, 9, 0, Math.PI * 2); ctx.fill();
+          } else if (key === 'pushup') {
+            const dip = pulse * 10;
+            ctx.fillStyle = '#475569';
+            ctx.fillRect(cx + 28, h * 0.44, 14, h * 0.38);
+            ctx.strokeStyle = '#94a3b8';
+            ctx.lineWidth = 8;
+            ctx.lineCap = 'round';
+            ctx.beginPath(); ctx.moveTo(cx - 38, h * 0.78); ctx.lineTo(cx - 8, h * 0.58 + dip * 0.5); ctx.stroke();
+            ctx.fillStyle = '#f97316';
+            ctx.beginPath(); ctx.roundRect(cx - 12, h * 0.44 + dip, 36, 14, 7); ctx.fill();
+            ctx.strokeStyle = '#fb923c';
+            ctx.lineWidth = 6;
+            ctx.beginPath(); ctx.moveTo(cx + 18, h * 0.52 + dip); ctx.lineTo(cx + 32, h * 0.46); ctx.stroke();
+            ctx.fillStyle = '#fed7aa';
+            ctx.beginPath(); ctx.arc(cx + 26, h * 0.36 + dip, 9, 0, Math.PI * 2); ctx.fill();
+          } else {
+            const drop = pulse * 18;
+            ctx.strokeStyle = '#94a3b8';
+            ctx.lineWidth = 8;
+            ctx.lineCap = 'round';
+            ctx.beginPath();
+            ctx.moveTo(cx - 8, cy + 6 + drop); ctx.lineTo(cx - 14, h * 0.8);
+            ctx.moveTo(cx + 8, cy + 6 + drop); ctx.lineTo(cx + 14, h * 0.8);
+            ctx.stroke();
+            ctx.fillStyle = '#f97316';
+            ctx.beginPath(); ctx.roundRect(cx - 13, cy - 22 + drop, 26, 30, 9); ctx.fill();
+            ctx.fillStyle = '#fed7aa';
+            ctx.beginPath(); ctx.arc(cx, cy - 32 + drop, 10, 0, Math.PI * 2); ctx.fill();
+          }
+
+          ctx.restore();
+        });
+        requestAnimationFrame(drawFrame);
+      }
+      requestAnimationFrame(drawFrame);
+    }
+
+    // =========================================================================
+    // BASE DE DATOS COMPLETA DE LOS 30 DÍAS (MES 1)
+    // =========================================================================
+    const RETO_30_DAYS = [
+      {
+        day: 1, week: 1, weekName: "Semana 1: Toma de contacto", duration: "8–10 min", svgKey: "neck",
+        title: "Descarga de cuello y trapecios + postura sentado",
+        moveName: "Inclinación cervical controlada + retracción escapular",
+        warmup: "Círculos suaves de hombros hacia atrás (10 reps) y 5 respiraciones profundas sentado.",
+        main: "Inclina lentamente la oreja derecha hacia el hombro derecho sin elevar el hombro contrario (35 seg por lado, 3 rondas). Después realiza 8 retracciones cervicales suaves.",
+        error: "Tirar de la cabeza con la mano o encoger el hombro hacia la oreja.",
+        easy: "Apoya la espalda completa en el respaldo de una silla y reduce el ángulo a la mitad.",
+        cooldown: "Rotaciones suaves de cuello mirando de izquierda a derecha sin forzar el final del giro."
+      },
+      {
+        day: 2, week: 1, weekName: "Semana 1: Toma de contacto", duration: "8–10 min", svgKey: "thorax",
+        title: "Movilidad torácica y apertura de pecho",
+        moveName: "Apertura torácica en pared (Libro abierto)",
+        warmup: "Elevación de brazos al frente y apertura en cruz (10 reps) soltando el pecho.",
+        main: "De lado junto a la pared con cadera fija, abre el brazo exterior en arco amplio siguiendo la mano con la mirada (3 rondas de 6 repeticiones por lado).",
+        error: "Girar la cadera y las rodillas en lugar de rotar solo la parte alta de la espalda.",
+        easy: "Realízalo sentado en silla con manos cruzadas sobre los hombros girando el tronco suave.",
+        cooldown: "Estiramiento suave de pecho apoyando el antebrazo en el marco de una puerta (30 seg/lado)."
+      },
+      {
+        day: 3, week: 1, weekName: "Semana 1: Toma de contacto", duration: "8–10 min", svgKey: "hip",
+        title: "Desbloqueo de cadera y flexores en suelo/silla",
+        moveName: "Zancada baja con retroversión pélvica suave",
+        warmup: "Balanceos suaves de pelvis adelante y atrás de pie o en cuadrupedia (12 reps).",
+        main: "En posición de media rodilla (con cojín bajo la rodilla trasera), activa el glúteo trasero y adelanta la cadera solo 3 cm sin arquear la lumbar (30 seg/lado, 3 rondas).",
+        error: "Arquear la zona lumbar hacia atrás buscando bajar mucho.",
+        easy: "Hazlo de pie con un pie adelantado y manos apoyadas en una silla o mesa.",
+        cooldown: "Posición del niño o descanso tumbado con rodillas flexionadas 2 minutos."
+      },
+      {
+        day: 4, week: 1, weekName: "Semana 1: Toma de contacto", duration: "8–10 min", svgKey: "lumbar",
+        title: "Movilidad suave de columna lumbar sin tirones",
+        moveName: "Rotación lumbar tumbado + gato-camello lento",
+        warmup: "Respiración diafragmática tumbado boca arriba con manos en costillas (8 respiraciones).",
+        main: "Con rodillas flexionadas y hombros pegados al suelo, lleva ambas rodillas suave a un lado y al otro (3 rondas de 45 seg), seguido de 8 gato-camello lentos.",
+        error: "Dejar caer las piernas por gravedad despegando el hombro contrario.",
+        easy: "Coloca un cojín entre las rodillas y reduce el giro a un rango cómodo.",
+        cooldown: "Abrazar una rodilla al pecho de forma alterna (30 seg por pierna)."
+      },
+      {
+        day: 5, week: 1, weekName: "Semana 1: Toma de contacto", duration: "8–10 min", svgKey: "ankle",
+        title: "Tobillos, pies y equilibrio básico",
+        moveName: "Dorsiflexión de tobillo en pared + apoyo unipodal",
+        warmup: "Círculos de tobillo en el aire y elevaciones suaves de talones (10 reps).",
+        main: "Con el pie a un puño de la pared y el talón pegado al suelo, lleva la rodilla hacia la pared sin levantar el talón (10 toques por pie, 3 rondas) + 20 seg de equilibrio a una pierna.",
+        error: "Levantar el talón del suelo para llegar antes a la pared.",
+        easy: "Acerca el pie un poco más a la pared y apoya un dedo en ella para el equilibrio.",
+        cooldown: "Masaje suave de planta del pie rodando una botella o pelota 1 minuto por pie."
+      },
+      {
+        day: 6, week: 1, weekName: "Semana 1: Toma de contacto", duration: "8–10 min", svgKey: "thorax",
+        title: "Hombros y escápulas: control y rango sin dolor",
+        moveName: "Ángeles deslizantes en pared + retracción escapular",
+        warmup: "Encogimientos y descensos lentos de hombros (10 reps).",
+        main: "Con espalda alta y cabeza apoyadas en la pared, desliza los brazos en forma de W hacia Y sin que se despeguen las costillas (3 rondas de 8 repeticiones).",
+        error: "Arquear la espalda baja separándola de la pared al subir los brazos.",
+        easy: "Separa los talones un paso de la pared y sube los brazos solo hasta la altura de los hombros.",
+        cooldown: "Cruzar un brazo por delante del pecho suavemente (25 seg por lado)."
+      },
+      {
+        day: 7, week: 1, weekName: "Semana 1: Toma de contacto", duration: "8–10 min", svgKey: "lumbar",
+        title: "Revisión de la Semana 1 + sesión suave de descarga",
+        moveName: "Flujo continuo: cuello + tórax + lumbar",
+        warmup: "Respiración profunda y movilidad articular general de pie (2 min).",
+        main: "Encadena 1 ronda suave de inclinación cervical (30s/lado), apertura torácica (6 reps/lado) y rotación lumbar tumbado (45s). Repite el circuito 2 veces.",
+        error: "Ir con prisa por terminar sin acompañar con la respiración.",
+        easy: "Quédate solo en los movimientos que mejor sensación te hayan dado esta semana.",
+        cooldown: "2 minutos de respiración lenta (inhala 4s, exhala 6s) tumbado boca arriba."
+      },
+      {
+        day: 8, week: 2, weekName: "Semana 2: Constancia y amplitud", duration: "10–12 min", svgKey: "neck",
+        title: "Cuello y rotación cervical controlada + pausa de pantalla",
+        moveName: "Retracción cervical + giro controlado en 3 puntos",
+        warmup: "Círculos escapulares atrás y abajo (12 reps).",
+        main: "Realiza 10 retracciones cervicales manteniendo 2 seg atrás, seguidas de giros cervicales lentos mirando sobre cada hombro (3 rondas de 6 reps/lado).",
+        error: "Adelantar la barbilla al girar la cabeza.",
+        easy: "Realízalo sentado con espalda bien apoyada y movimiento más corto.",
+        cooldown: "Inclinación lateral suave de cuello (30 seg/lado)."
+      },
+      {
+        day: 9, week: 2, weekName: "Semana 2: Constancia y amplitud", duration: "10–12 min", svgKey: "thorax",
+        title: "Espalda alta: extensión torácica y control postural",
+        moveName: "Extensión torácica en silla + apertura en pared",
+        warmup: "Gato-camello sentado con manos en rodillas (10 reps).",
+        main: "Sentado en silla con manos detrás de la nuca, abre codos y extiende suave la espalda alta sobre el respaldo (8 reps) + apertura torácica en pared (6 reps/lado). 3 rondas.",
+        error: "Forzar el cuello tirando con las manos.",
+        easy: "Cruza los brazos sobre el pecho en lugar de llevar las manos detrás de la cabeza.",
+        cooldown: "Estiramiento de dorsales apoyando manos en el respaldo de la silla (40 seg)."
+      },
+      {
+        day: 10, week: 2, weekName: "Semana 2: Constancia y amplitud", duration: "10–12 min", svgKey: "hip",
+        title: "Rotación de cadera (interna y externa) para soltar rigidez",
+        moveName: "Cambios de cadera 90/90 asistidos + zancada baja",
+        warmup: "Círculos suaves de cadera de pie con manos en cintura (10/lado).",
+        main: "Sentado en esterilla con rodillas flexionadas a 90°, lleva ambas rodillas suavemente de derecha a izquierda apoyando manos atrás (8 cambios) + zancada baja (35s/lado). 3 rondas.",
+        error: "Encorvar la columna o levantar demasiado la pelvis del suelo.",
+        easy: "Siéntate sobre un cojín doblado para dar más espacio a las caderas.",
+        cooldown: "Mariposa suave sentado sin empujar las rodillas hacia abajo (45 seg)."
+      },
+      {
+        day: 11, week: 2, weekName: "Semana 2: Constancia y amplitud", duration: "10–12 min", svgKey: "lumbar",
+        title: "Zona lumbar y faja abdominal suave (estabilidad)",
+        moveName: "Dead Bug básico + rotación lumbar controlada",
+        warmup: "Báscula pélvica tumbado boca arriba pegando y soltando lumbar (12 reps).",
+        main: "Tumbado con rodillas a 90°, baja un talón suave hacia el suelo manteniendo abdomen activo sin que se arquee la espalda (8 reps alternas) + rotación lumbar (45s). 3 rondas.",
+        error: "Despegar la zona lumbar del suelo al bajar la pierna.",
+        easy: "Mantén un pie apoyado en el suelo mientras mueves solo la otra pierna.",
+        cooldown: "Rodillas al pecho con balanceo lateral muy suave (1 min)."
+      },
+      {
+        day: 12, week: 2, weekName: "Semana 2: Constancia y amplitud", duration: "10–12 min", svgKey: "ankle",
+        title: "Tobillo y gemelo: movilidad y apoyo firme",
+        moveName: "Dorsiflexión en pared + extensión de gemelo",
+        warmup: "Caminata en el sitio elevando talones alternos (1 min).",
+        main: "12 toques de rodilla a pared por pie manteniendo talón pegado + estiramiento suave de gemelo apoyando manos en pared (30 seg/lado). 3 rondas.",
+        error: "Meter la rodilla hacia dentro al avanzar hacia la pared.",
+        easy: "Reduce a 8 repeticiones por lado con pausa de 1 segundo.",
+        cooldown: "Equilibrio a una pierna 25 seg por lado."
+      },
+      {
+        day: 13, week: 2, weekName: "Semana 2: Constancia y amplitud", duration: "10–12 min", svgKey: "thorax",
+        title: "Hombros y muñecas: movilidad para día de teclado/móvil",
+        moveName: "Descarga de flexores de muñeca + ángeles en pared",
+        warmup: "Abrir y cerrar manos con energía + círculos de muñecas (1 min).",
+        main: "En cuadrupedia suave (o apoyado en mesa), balancea ligeramente el peso sobre palmas abiertas (30 seg) + ángeles deslizantes en pared (8 reps). 3 rondas.",
+        error: "Bloquear los codos con tensión o cargar todo el peso de golpe.",
+        easy: "Haz el apoyo de muñecas de pie sobre una mesa para regular la presión.",
+        cooldown: "Estiramiento suave de antebrazo con brazo extendido (25 seg/lado)."
+      },
+      {
+        day: 14, week: 2, weekName: "Semana 2: Constancia y amplitud", duration: "10–12 min", svgKey: "thorax",
+        title: "Revisión de la Semana 2 + rutina combinada tren superior",
+        moveName: "Circuito postural: retracción + pared + tórax",
+        warmup: "Respiración profunda y movilidad de hombros (2 min).",
+        main: "3 rondas fluidas de: 8 retracciones cervicales + 8 ángeles en pared + 6 aperturas torácicas por lado.",
+        error: "Perder la alineación de costillas y cabeza al acumular repeticiones.",
+        easy: "Descansa 30 segundos entre cada ejercicio si notas fatiga postural.",
+        cooldown: "Estiramiento de pecho en marco de puerta (35 seg/lado)."
+      },
+      {
+        day: 15, week: 3, weekName: "Semana 3: Progresión y resistencia", duration: "12–15 min", svgKey: "strength",
+        title: "Circuito corto de movilidad + control postural en pie",
+        moveName: "Sentadilla controlada a silla + apertura torácica",
+        warmup: "Marcha suave y círculos de cadera y hombros (2 min).",
+        main: "Realiza 10 sentadillas controladas bajando en 3 segundos hasta tocar suavemente una silla + 6 aperturas torácicas por lado. 3 rondas.",
+        error: "Dejarse caer sobre la silla o juntar las rodillas al subir.",
+        easy: "Usa una silla más alta o pon un cojín encima para acortar el recorrido.",
+        cooldown: "Estiramiento suave de cuádriceps apoyado en pared (30 seg/lado)."
+      },
+      {
+        day: 16, week: 3, weekName: "Semana 3: Progresión y resistencia", duration: "12–15 min", svgKey: "neck",
+        title: "Cuello y hombros con pausas isométricas suaves",
+        moveName: "Isométricos suaves de cuello + Y-T-W de pie",
+        warmup: "Rotaciones escapulares lentas (12 reps).",
+        main: "Presión suave de mano contra frente y sien sin mover la cabeza (5 seg x 4 direcciones) + elevaciones de brazos en Y-T-W inclinado ligeramente adelante (8 reps). 3 rondas.",
+        error: "Hacer fuerza máxima contra la cabeza (debe ser solo un 20% de tensión).",
+        easy: "Realiza los movimientos Y-T-W sentado con espalda apoyada.",
+        cooldown: "Inclinación cervical suave (35 seg/lado)."
+      },
+      {
+        day: 17, week: 3, weekName: "Semana 3: Progresión y resistencia", duration: "12–15 min", svgKey: "hip",
+        title: "Caderas y glúteos: activación y rango sin forzar",
+        moveName: "Puente de glúteo + zancada baja con pausa 2s",
+        warmup: "Cambios de cadera 90/90 suaves (8 reps).",
+        main: "Tumbado boca arriba, sube cadera apretando glúteos con pausa de 2 seg arriba (12 reps) + zancada baja con pausa de 2 seg adelante (6 reps/lado). 3 rondas.",
+        error: "Subir la cadera arquendo la espalda baja en lugar de activar glúteos.",
+        easy: "Haz el puente de glúteo sin pausa arriba y con rango corto.",
+        cooldown: "Figura 4 tumbado (cruce de tobillo sobre rodilla) 35 seg/lado."
+      },
+      {
+        day: 18, week: 3, weekName: "Semana 3: Progresión y resistencia", duration: "12–15 min", svgKey: "lumbar",
+        title: "Movilidad de columna en 3 planos",
+        moveName: "Gato-camello + rotación lumbar con pausa 2s",
+        warmup: "Respiración costal tumbado (8 ciclos).",
+        main: "10 repeticiones de gato-camello lento + rotación lumbar tumbado manteniendo una pausa de 2 segundos en cada lado sin despegar hombros (45 seg). 3 rondas.",
+        error: "Contener la respiración durante la pausa lateral.",
+        easy: "Mantén la pausa en 1 segundo y ángulo reducido.",
+        cooldown: "Posición del niño con brazos estirados adelante (1 min)."
+      },
+      {
+        day: 19, week: 3, weekName: "Semana 3: Progresión y resistencia", duration: "12–15 min", svgKey: "ankle",
+        title: "Piernas y tobillos: estabilidad y zancada corta controlada",
+        moveName: "Dorsiflexión en pared + zancada atrás asistida",
+        warmup: "Elevaciones de talones y puntas de pie (15 reps).",
+        main: "10 toques de tobillo en pared por lado + 8 zancadas atrás cortas y controladas apoyando una mano en silla/pared si lo necesitas. 3 rondas.",
+        error: "Golpear la rodilla trasera contra el suelo.",
+        easy: "Haz un paso atrás corto sin bajar apenas la rodilla.",
+        cooldown: "Estiramiento de gemelo en pared (35 seg/lado)."
+      },
+      {
+        day: 20, week: 3, weekName: "Semana 3: Progresión y resistencia", duration: "12–15 min", svgKey: "thorax",
+        title: "Espalda y pecho: equilibrio postural para jornadas largas",
+        moveName: "Ángeles en pared + remo escapular isométrico",
+        warmup: "Aperturas de pecho en cruz (12 reps).",
+        main: "10 ángeles deslizantes en pared + 10 remos escapulares de pie juntando escápulas atrás 2 segundos con hombros bajos. 3 rondas.",
+        error: "Subir los hombros hacia las orejas al juntar escápulas.",
+        easy: "Reduce a 6 repeticiones por serie.",
+        cooldown: "Respiración profunda con manos detrás de la cabeza abriendo codos (45 seg)."
+      },
+      {
+        day: 21, week: 3, weekName: "Semana 3: Progresión y resistencia", duration: "12–15 min", svgKey: "strength",
+        title: "Revisión de la Semana 3 + sesión combinada cuerpo entero",
+        moveName: "Circuito completo: sentadilla + tórax + lumbar",
+        warmup: "Movilidad articular general de pie (2 min).",
+        main: "3 rondas de: 10 sentadillas controladas + 6 aperturas torácicas/lado + 45 seg rotación lumbar tumbado.",
+        error: "Acelerar el ritmo perdiendo el control de la bajada o el giro.",
+        easy: "Haz 2 rondas completas a ritmo tranquilo.",
+        cooldown: "2 minutos de vuelta a la calma tumbado boca arriba."
+      },
+      {
+        day: 22, week: 4, weekName: "Semana 4: Consolidación y hábito", duration: "10–12 min", svgKey: "hip",
+        title: "Rutina exprés de 10 min para días de poco tiempo",
+        moveName: "Secuencia rápida: tórax + cadera + sentadilla",
+        warmup: "Respiración activa y círculos de hombros (1.5 min).",
+        main: "2 rondas continuas de: 6 aperturas torácicas/lado + 30s zancada baja/lado + 10 sentadillas controladas.",
+        error: "Saltarse el calentamiento inicial.",
+        easy: "Usa la silla para apoyar manos en la zancada y la sentadilla.",
+        cooldown: "Respiración lenta de pie (1 min)."
+      },
+      {
+        day: 23, week: 4, weekName: "Semana 4: Consolidación y hábito", duration: "12–15 min", svgKey: "neck",
+        title: "Enfoque cuello, hombros y parte alta de la espalda",
+        moveName: "Pack superior: retracción + ángeles + apertura",
+        warmup: "Círculos cervicales medios y escapulares (2 min).",
+        main: "3 rondas de: inclinación cervical (30s/lado) + 10 ángeles en pared + 6 aperturas torácicas/lado.",
+        error: "Forzar el cuello al final del día.",
+        easy: "Hazlo sentado con respaldo firme.",
+        cooldown: "Descarga de trapecios con exhalación larga (1 min)."
+      },
+      {
+        day: 24, week: 4, weekName: "Semana 4: Consolidación y hábito", duration: "12–15 min", svgKey: "lumbar",
+        title: "Enfoque cadera, zona lumbar y parte baja",
+        moveName: "Pack inferior: zancada + lumbar + tobillo",
+        warmup: "Gato-camello suave (10 reps).",
+        main: "3 rondas de: zancada baja (35s/lado) + rotación lumbar tumbado (45s) + 10 toques de tobillo en pared/lado.",
+        error: "Arquear zona lumbar en la zancada.",
+        easy: "Coloca cojín bajo rodilla y entre piernas en el giro.",
+        cooldown: "Rodillas al pecho suave (1 min)."
+      },
+      {
+        day: 25, week: 4, weekName: "Semana 4: Consolidación y hábito", duration: "12–15 min", svgKey: "strength",
+        title: "Coordinación, equilibrio y movilidad articular fluida",
+        moveName: "Sentadilla con pausa + equilibrio unipodal",
+        warmup: "Movilidad de tobillos y cadera de pie (2 min).",
+        main: "3 rondas de: 10 sentadillas con pausa de 2 seg abajo + 30 seg de equilibrio a una pierna por lado.",
+        error: "Perder la alineación de rodilla sobre el pie.",
+        easy: "Toca ligeramente la pared con un dedo durante el equilibrio.",
+        cooldown: "Estiramiento suave de gemelos (30s/lado)."
+      },
+      {
+        day: 26, week: 4, weekName: "Semana 4: Consolidación y hábito", duration: "12–15 min", svgKey: "hip",
+        title: "Rutina anti-rigidez tras muchas horas sentado",
+        moveName: "Reset completo de silla: cadera + pecho + lumbar",
+        warmup: "Aperturas de pecho y respiración profunda (2 min).",
+        main: "3 rondas de: zancada baja (35s/lado) + estiramiento de pecho en pared (30s/lado) + rotación lumbar tumbado (45s).",
+        error: "Hacerlo con prisa mirando el móvil.",
+        easy: "Reduce a 2 rondas pausadas.",
+        cooldown: "Descanso con piernas apoyadas sobre una silla (2 min)."
+      },
+      {
+        day: 27, week: 4, weekName: "Semana 4: Consolidación y hábito", duration: "12–15 min", svgKey: "thorax",
+        title: "Sesión completa de movilidad y control corporal",
+        moveName: "Flujo integral de 4 estaciones",
+        warmup: "Activación articular global (2 min).",
+        main: "3 rondas de: 8 ángeles en pared + 8 Dead Bug alternos + 8 puentes de glúteo + 6 aperturas torácicas/lado.",
+        error: "Despegar la lumbar en el Dead Bug o los ángeles en pared.",
+        easy: "Haz versiones cortas de cada ejercicio manteniendo respiración fluida.",
+        cooldown: "Respiración diafragmática tumbado (2 min)."
+      },
+      {
+        day: 28, week: 4, weekName: "Semana 4: Consolidación y hábito", duration: "12–15 min", svgKey: "neck",
+        title: "Repaso de tus 3 movimientos favoritos + ajuste de postura",
+        moveName: "Sesión personalizada de consolidación",
+        warmup: "Movilidad suave de cuello y hombros (2 min).",
+        main: "Elige los 3 movimientos que mejor sientan a tu cuerpo de todo el reto y realiza 3 rondas de 45 segundos cada uno con técnica impecable.",
+        error: "Elegir solo los más fáciles evitando los que más necesitas.",
+        easy: "Mantén un ritmo cómodo y sin fatiga.",
+        cooldown: "Alineación postural de pie frente a pared 1 minuto."
+      },
+      {
+        day: 29, week: 4, weekName: "Semana 4: Consolidación y hábito", duration: "10–12 min", svgKey: "lumbar",
+        title: "Rutina suave de movilidad y recuperación",
+        moveName: "Descarga general preparatoria del Día 30",
+        warmup: "Respiración profunda nasal (2 min).",
+        main: "2 rondas muy suaves de: inclinación cervical (30s/lado) + zancada baja (30s/lado) + rotación lumbar tumbado (45s) + gato-camello (8 reps).",
+        error: "Forzar rangos el día previo al cierre.",
+        easy: "Muévete al 70% de tu rango máximo.",
+        cooldown: "Relajación completa en esterilla (2 min)."
+      },
+      {
+        day: 30, week: 4, weekName: "Semana 4: Consolidación y hábito", duration: "12–15 min", svgKey: "thorax",
+        title: "Evaluación final de sensaciones + mapa a partir del Día 31",
+        moveName: "Test comparativo de movilidad + celebración de racha",
+        warmup: "Movilidad articular completa de cuello a tobillos (2 min).",
+        main: "Realiza 2 rondas completas de los 5 pilares del método: cuello (30s/lado), apertura torácica (6/lado), zancada de cadera (30s/lado), rotación lumbar (45s) y tobillo en pared (8/lado).",
+        error: "Dejar el hábito mañana por haber llegado al Día 30.",
+        easy: "Disfruta del movimiento y anota tu mejora respecto al Día 1.",
+        cooldown: "Revisión de progreso y salto al Mes 2 del Club Mensual (Fuerza en casa)."
+      }
+    ];
+
+    // =========================================================================
+    // PLAN ANUAL COMPLETO (12 MESES · MESES 2 AL 12 DEL CLUB MENSUAL)
+    // =========================================================================
+    const CLUB_ANNUAL_THEMES = [
+      {
+        month: 2, quarter: "Trimestre 1 · Base", shortLabel: "Mes 2 · Fuerza en Casa",
+        title: "Mes 2 · Fuerza básica en casa sin material (12–15 min)",
+        subtitle: "Gana tono, firmeza y control corporal sin pesas ni gimnasio en 5 sesiones semanales + 1 descarga.",
+        focus: [
+          { clipId: "m2_push", tag: "Empuje", name: "Flexiones inclinadas controladas", desc: "Manos en mesa o pared, cuerpo recto, bajada lenta en 3 seg (3x8–12).", error: "Hundir la cadera o abrir codos a 90°.", easy: "Apoya manos más alto en la pared." },
+          { clipId: "m2_row", tag: "Tracción", name: "Remo escapular / retracción", desc: "Junta escápulas atrás con pausa de 2 seg sin encoger hombros (3x10–12).", error: "Tirar del cuello adelante.", easy: "Hazlo sentado con espalda apoyada." },
+          { clipId: "m2_squat", tag: "Pierna", name: "Sentadilla a silla + puente glúteo", desc: "10 sentadillas lentas + 12 puentes de glúteo con pausa arriba (3 rondas).", error: "Meter rodillas hacia dentro.", easy: "Usa silla alta o cojín." },
+          { clipId: "m2_plank", tag: "Core", name: "Plancha frontal de estabilidad", desc: "Antebrazos en suelo o mesa activando abdomen y glúteos (3x20–35 seg).", error: "Arquear la zona lumbar.", easy: "Apoya rodillas o hazla inclinada." },
+          { clipId: "m2_circuit", tag: "Full Body", name: "Circuito combinado fuerza base", desc: "2–3 vueltas fluidas enlazando los 4 patrones básicos.", error: "Correr sacrificando técnica.", easy: "Descansa 40s entre ejercicios." }
+        ]
+      },
+      {
+        month: 3, quarter: "Trimestre 1 · Base", shortLabel: "Mes 3 · Rutinas Exprés",
+        title: "Mes 3 · Rutinas exprés, postura y anti-rigidez (7–12 min)",
+        subtitle: "Sostén el hábito a largo plazo con sesiones rápidas de rescate postural para semanas ocupadas.",
+        focus: [
+          { clipId: "m3_desk", tag: "Oficina", name: "Rescate cervical y torácico de 8 min", desc: "Retracción cervical + apertura en pared tras pantalla.", error: "Forzar cuello con las manos.", easy: "Movimiento más corto sentado." },
+          { clipId: "m3_hipreset", tag: "Cadera", name: "Reset lumbar y caderas sentado", desc: "Zancada baja + cambios 90/90 + giro lumbar tumbado.", error: "Arquear espalda baja.", easy: "Cojín bajo rodilla." },
+          { clipId: "m3_express7", tag: "Exprés 7m", name: "Protocolo mínimo diario de 7 minutos", desc: "3 movimientos clave para mantener racha sin excusas.", error: "Hacerlo sin respirar.", easy: "Ritmo suave al 70%." },
+          { clipId: "m3_scapula", tag: "Postura", name: "Alineación escapular en pared", desc: "Ángeles deslizantes + extensión torácica en silla.", error: "Despegar costillas de pared.", easy: "Subir brazos hasta hombros." },
+          { clipId: "m3_night", tag: "Descarga", name: "Flujo nocturno descarga total", desc: "Respiración 4-6 + movilidad lenta antes de dormir.", error: "Tirones bruscos.", easy: "Apoyo con almohadas." }
+        ]
+      },
+      {
+        month: 4, quarter: "Trimestre 2 · Postura", shortLabel: "Mes 4 · Espalda Blindada",
+        title: "Mes 4 · Espalda blindada y cuello sin tensión (12–15 min)",
+        subtitle: "Refuerzo específico de musculatura postural profunda para proteger espalda alta y cervicales.",
+        focus: [
+          { clipId: "m4_f1", tag: "Cervical", name: "Isométricos cervicales + retracción", desc: "Fortalece cuello profundo sin impacto (4 direcciones x 6 seg).", error: "Empujar demasiado fuerte.", easy: "Tensión al 20%." },
+          { clipId: "m4_f2", tag: "Escápulas", name: "Elevaciones Y-T-W boca abajo o inclinado", desc: "Activa trapecio medio e inferior para abrir postura.", error: "Encoger hombros a orejas.", easy: "De pie apoyado en pared." },
+          { clipId: "m4_f3", tag: "Lumbar", name: "Bird-Dog (Perro-Pájaro) controlado", desc: "Extiende brazo y pierna contrarios sin mover pelvis (3x8/lado).", error: "Rotar la cadera al estirar.", easy: "Mueve solo piernas." },
+          { clipId: "m4_f4", tag: "Tórax", name: "Rotación torácica en cuadrupedia", desc: "Mano en nuca y giro limpio abriendo codo al techo.", error: "Mover caderas lateralmente.", easy: "Sentado en silla." },
+          { clipId: "m4_f5", tag: "Integración", name: "Circuito espalda alta y core", desc: "Enlaza Bird-Dog + Y-T-W + apertura en pared.", error: "Perder alineación de cabeza.", easy: "2 rondas pausadas." }
+        ]
+      },
+      {
+        month: 5, quarter: "Trimestre 2 · Postura", shortLabel: "Mes 5 · Caderas Libres",
+        title: "Mes 5 · Caderas libres y glúteo fuerte (12–15 min)",
+        subtitle: "Combate el acortamiento por estar sentado ganando movilidad 360° y fuerza en glúteos.",
+        focus: [
+          { clipId: "m5_f1", tag: "Glúteo", name: "Puente de glúteo unilateral / marcha", desc: "Sube cadera y alterna elevación suave de rodilla sin caer pelvis.", error: "Arquear lumbar arriba.", easy: "Puente a dos piernas." },
+          { clipId: "m5_f2", tag: "Cadera 360", name: "Flujo 90/90 sin manos", desc: "Cambia rodillas de lado controlando el tronco erguido.", error: "Dejarse caer atrás.", easy: "Apoya manos atrás." },
+          { clipId: "m5_f3", tag: "Lateral", name: "Abducción de cadera tumbado (Almeja)", desc: "Activa glúteo medio para estabilizar rodilla y lumbar.", error: "Girar pelvis hacia atrás.", easy: "Rango corto controlado." },
+          { clipId: "m5_f4", tag: "Flexores", name: "Zancada baja con alcance superior", desc: "Estira flexor de cadera elevando brazo del mismo lado.", error: "Hundir zona lumbar.", easy: "Manos en muslo." },
+          { clipId: "m5_f5", tag: "Cadena", name: "Bisagra de cadera (Buenos días)", desc: "Lleva cadera atrás con espalda recta sintiendo isquios.", error: "Redondear espalda.", easy: "Flexiona más rodillas." }
+        ]
+      },
+      {
+        month: 6, quarter: "Trimestre 2 · Postura", shortLabel: "Mes 6 · Core y Equilibrio",
+        title: "Mes 6 · Faja abdominal anti-dolor y equilibrio (12–15 min)",
+        subtitle: "Estabilidad central real sin abdominales clásicos que cargan el cuello.",
+        focus: [
+          { clipId: "m6_f1", tag: "Anti-extensión", name: "Dead Bug completo (brazo + pierna)", desc: "Extiende extremidades opuestas manteniendo lumbar pegada.", error: "Despegar espalda baja.", easy: "Solo movimiento de piernas." },
+          { clipId: "m6_f2", tag: "Lateral", name: "Plancha lateral modificada", desc: "Apoyo en antebrazo y rodillas alineando hombro-cadera.", error: "Dejar caer cadera al suelo.", easy: "15 seg por lado." },
+          { clipId: "m6_f3", tag: "Equilibrio", name: "Equilibrio unipodal con giro de cabeza", desc: "Mantén apoyo a una pierna mientras giras mirada suave.", error: "Bloquear rodilla de apoyo.", easy: "Cerca de una pared." },
+          { clipId: "m6_f4", tag: "Respiración", name: "Activación transverso abdominal 360°", desc: "Exhala largo activando faja profunda sin hundir pecho.", error: "Aguantar la respiración.", easy: "Tumbado rodillas dobladas." },
+          { clipId: "m6_f5", tag: "Control", name: "Paso lento en línea recta", desc: "Camina talón-punta controlando centro de gravedad.", error: "Mirar siempre al suelo.", easy: "Pasos normales lentos." }
+        ]
+      },
+      {
+        month: 7, quarter: "Trimestre 3 · Rendimiento", shortLabel: "Mes 7 · Fuerza Nivel 2",
+        title: "Mes 7 · Progresión de fuerza en casa Nivel 2 (15 min)",
+        subtitle: "Sube un peldaño la fuerza funcional usando tempos lentos y pausas isométricas.",
+        focus: [
+          { clipId: "m7_f1", tag: "Empuje N2", name: "Flexiones inclinadas con pausa 2s abajo", desc: "Baja en 3s, pausa 2s cerca del apoyo y sube firme.", error: "Rebotar abajo.", easy: "Sin pausa abajo." },
+          { clipId: "m7_f2", tag: "Pierna N2", name: "Sentadilla tempo 3-2-1 + zancada atrás", desc: "Control excéntrico y estabilidad unilateral.", error: "Adelantar talón.", easy: "Con silla detrás." },
+          { clipId: "m7_f3", tag: "Espalda N2", name: "Nadadores en suelo / banco", desc: "Alterna brazos en arco lento activando toda la espalda.", error: "Levantar barbilla.", easy: "De pie inclinado." },
+          { clipId: "m7_f4", tag: "Core N2", name: "Plancha con toque suave de hombros", desc: "Evita que la cadera balancee al levantar una mano.", error: "Girar pelvis.", easy: "En pared o mesa." },
+          { clipId: "m7_f5", tag: "Reto N2", name: "Circuito densidad 15 minutos", desc: "Completa 3 rondas limpias controlando descansos.", error: "Perder postura al final.", easy: "2 rondas completas." }
+        ]
+      },
+      {
+        month: 8, quarter: "Trimestre 3 · Rendimiento", shortLabel: "Mes 8 · Movilidad Fluida",
+        title: "Mes 8 · Movilidad dinámica y flujos continuos (12–15 min)",
+        subtitle: "Conecta movimientos sin pausas bruscas para ganar agilidad y ligereza corporal.",
+        focus: [
+          { clipId: "m8_f1", tag: "Flujo 1", name: "Onda espinal + apertura torácica", desc: "Transición fluida entre flexión, extensión y giro.", error: "Bloqueo respiratorio.", easy: "Pausa entre pasos." },
+          { clipId: "m8_f2", tag: "Flujo 2", name: "Zancada baja a rotación de tronco", desc: "Desde zancada apoya mano contraria y gira pecho.", error: "Caer sobre el hombro.", easy: "Mano en bloque/silla." },
+          { clipId: "m8_f3", tag: "Flujo 3", name: "Sentadilla profunda asistida (Malasana)", desc: "Baja cómodo sujetándote al marco de puerta.", error: "Levantar talones.", easy: "Altura media en silla." },
+          { clipId: "m8_f4", tag: "Flujo 4", name: "Círculos articulares controlados (CARs)", desc: "Recorre el máximo rango limpio de hombro y cadera.", error: "Compensar con tronco.", easy: "Círculos más pequeños." },
+          { clipId: "m8_f5", tag: "Flujo 5", name: "Secuencia matinal de 12 minutos", desc: "Despierta todas las articulaciones de arriba abajo.", error: "Ir con prisa.", easy: "1 sola vuelta." }
+        ]
+      },
+      {
+        month: 9, quarter: "Trimestre 3 · Rendimiento", shortLabel: "Mes 9 · Energía sin Impacto",
+        title: "Mes 9 · Resistencia suave y energía sin impacto (12–15 min)",
+        subtitle: "Activa el sistema cardiovascular en casa sin saltos ni impacto para rodillas o espalda.",
+        focus: [
+          { clipId: "m9_f1", tag: "Cardio suave", name: "Marcha alta con braceo postural", desc: "Eleva rodillas y coordina brazos con tronco alto (45s).", error: "Encorvar hombros.", easy: "Ritmo moderado." },
+          { clipId: "m9_f2", tag: "Dinámico", name: "Paso lateral + apertura de brazos", desc: "Desplazamiento fluido activando cadera y pecho.", error: "Arrastrar pies.", easy: "Paso corto." },
+          { clipId: "m9_f3", tag: "Pierna fluida", name: "Sentadilla parcial + elevación de talones", desc: "Bombeo muscular continuo para piernas ligeras.", error: "Bloquear rodillas.", easy: "Apoyo ligero en silla." },
+          { clipId: "m9_f4", tag: "Core activo", name: "Escalador lento (Mountain Climber)", desc: "Lleva rodilla al pecho lento manteniendo espalda plana.", error: "Subir cadera en pico.", easy: "Manos en mesa alta." },
+          { clipId: "m9_f5", tag: "Vitalidad", name: "Circuito energía 30s trabajo / 15s pausa", desc: "4 estaciones sin impacto para activar todo el cuerpo.", error: "Quedarse sin aire.", easy: "20s trabajo / 20s pausa." }
+        ]
+      },
+      {
+        month: 10, quarter: "Trimestre 4 · Maestría", shortLabel: "Mes 10 · Tren Superior",
+        title: "Mes 10 · Control escapular, brazos y postura alta (12–15 min)",
+        subtitle: "Consolida hombros sanos, fuertes y móviles para cualquier actividad diaria.",
+        focus: [
+          { clipId: "m10_f1", tag: "Hombro", name: "Rotación externa de hombro en pared", desc: "Fortalece manguito rotador con codos pegados.", error: "Separar codos del cuerpo.", easy: "Sin apoyar espalda." },
+          { clipId: "m10_f2", tag: "Tríceps/Pecho", name: "Fondos suaves en silla + flexión inclinada", desc: "Fuerza controlada de empuje sin molestar hombros.", error: "Adelantar hombros al bajar.", easy: "Solo flexión en pared." },
+          { clipId: "m10_f3", tag: "Escápula", name: "Push-up escapular en pared o suelo", desc: "Junta y separa escápulas con brazos estirados.", error: "Doblar los codos.", easy: "De pie contra pared." },
+          { clipId: "m10_f4", tag: "Cuello/Trapecio", name: "Paseo postural con elongación axial", desc: "Camina imaginando que creces desde la coronilla.", error: "Sacar barbilla.", easy: "De pie estático 30s." },
+          { clipId: "m10_f5", tag: "Mix Superior", name: "Sesión completa tren superior 15m", desc: "Combina movilidad + fuerza postural limpia.", error: "Fatigar cuello.", easy: "Descansos de 30s." }
+        ]
+      },
+      {
+        month: 11, quarter: "Trimestre 4 · Maestría", shortLabel: "Mes 11 · Piernas Ágiles",
+        title: "Mes 11 · Piernas ágiles, tobillos y estabilidad (12–15 min)",
+        subtitle: "Base sólida desde los pies hasta la cadera para caminar y moverte con total seguridad.",
+        focus: [
+          { clipId: "m11_f1", tag: "Pie y Tobillo", name: "Elevación de talones excéntrica lenta", desc: "Sube en 1s y baja en 3s controlando el tobillo.", error: "Girar tobillo hacia fuera.", easy: "Apoyo con dos manos." },
+          { clipId: "m11_f2", tag: "Unilateral", name: "Zancada lateral corta controlada", desc: "Trabaja aductores y estabilidad de rodilla.", error: "Levantar planta del pie.", easy: "Apertura más corta." },
+          { clipId: "m11_f3", tag: "Glúteo/Isquio", name: "Puente de glúteo con pies alejados", desc: "Enfoca cadena posterior manteniendo abdomen firme.", error: "Calambre por tensar lumbar.", easy: "Pies cerca de glúteos." },
+          { clipId: "m11_f4", tag: "Equilibrio", name: "Peso muerto a una pierna asistido", desc: "Bisagra de cadera tocando pared con una mano.", error: "Abrir cadera al lado.", easy: "Punta del pie atrás apoyada." },
+          { clipId: "m11_f5", tag: "Base", name: "Circuito piernas y estabilidad", desc: "3 rondas equilibradas sin impacto.", error: "Perder control en bajada.", easy: "2 rondas." }
+        ]
+      },
+      {
+        month: 12, quarter: "Trimestre 4 · Maestría", shortLabel: "Mes 12 · Cierre Anual",
+        title: "Mes 12 · Consolidación anual y dominio corporal (12–15 min)",
+        subtitle: "Integra todo lo aprendido durante el año y mide tu evolución real de movilidad y fuerza.",
+        focus: [
+          { clipId: "m12_f1", tag: "Pilar 1", name: "Evaluación movilidad cuello y tórax", desc: "Comprueba tu rango limpio y sin rigidez.", error: "Forzar el test.", easy: "Rango cómodo." },
+          { clipId: "m12_f2", tag: "Pilar 2", name: "Evaluación cadera, lumbar y tobillo", desc: "Repasa los 3 movimientos clave del tren inferior.", error: "Contener respiración.", easy: "Con apoyos." },
+          { clipId: "m12_f3", tag: "Pilar 3", name: "Test de fuerza funcional en casa", desc: "Sentadillas + flexiones inclinadas + plancha estable.", error: "Sacrificar forma.", easy: "Versión adaptada." },
+          { clipId: "m12_f4", tag: "Tu Rutina", name: "Diseño de tu rutina maestra de 15 min", desc: "Combina tus favoritos de movilidad y fuerza.", error: "Hacerla demasiado larga.", easy: "3 bloques de 4 min." },
+          { clipId: "m12_f5", tag: "Cierre Año", name: "Sesión celebración 365 días en movimiento", desc: "Flujo completo de cuerpo entero para cerrar el ciclo.", error: "Dejar de moverte.", easy: "Ritmo disfrute." }
+        ]
+      }
+    ];
+
+    function getClubMonthStructured(monthNum) {
+      const theme = CLUB_ANNUAL_THEMES.find(m => m.month === monthNum) || CLUB_ANNUAL_THEMES[0];
+      const weekTemplates = [
+        { num: 1, label: "Semana 1 · Aprendizaje y control técnico", mod: "Ejecución limpia y control postural sin prisas." },
+        { num: 2, label: "Semana 2 · Tiempo bajo tensión (pausas de 2 seg)", mod: "Añade una pausa controlada de 2 segundos en cada repetición." },
+        { num: 3, label: "Semana 3 · Mayor fluidez y rango articular", mod: "Enlaza los bloques con descansos cortos de 20–30 segundos." },
+        { num: 4, label: "Semana 4 · Consolidación y cierre del mes", mod: "Completa la semana con técnica sólida y valoración final." }
+      ];
+
+      return {
+        month: theme.month,
+        quarter: theme.quarter,
+        title: theme.title,
+        subtitle: theme.subtitle,
+        weeks: weekTemplates.map(w => ({
+          weekTitle: w.label,
+          sessions: theme.focus.map((f, idx) => ({
+            id: `m${theme.month}w${w.num}s${idx + 1}`,
+            clipId: f.clipId || `m${theme.month}_f${idx + 1}`,
+            dayLabel: `Sesión ${idx + 1} · ${f.tag}`,
+            name: f.name,
+            desc: `${f.desc} (${w.mod})`,
+            error: f.error,
+            easy: f.easy
+          }))
+        }))
+      };
+    }
+
+    // =========================================================================
+    // BIBLIOTECA DE MOVIMIENTOS BASE REUTILIZABLES
+    // =========================================================================
+    const MOVEMENTS_LIBRARY = [
+      { id: "mov1", name: "Inclinación cervical controlada", zone: "Cuello y Hombros", svgKey: "neck", desc: "Descarga lateral suave de cuello y trapecio superior manteniendo hombros bajos.", usedIn: "Días 1, 7, 14, 16, 23, 29, 30" },
+      { id: "mov2", name: "Retracción cervical (Doble mentón)", zone: "Cuello y Hombros", svgKey: "neck", desc: "Desliza la barbilla atrás en horizontal para alinear la cabeza sobre los hombros.", usedIn: "Días 1, 8, 16 + Mes 3" },
+      { id: "mov3", name: "Apertura torácica en pared", zone: "Espalda y Tórax", svgKey: "thorax", desc: "Rotación controlada de la parte alta de la espalda fijando la cadera contra la pared.", usedIn: "Días 2, 7, 9, 14, 15, 21, 22, 30" },
+      { id: "mov4", name: "Ángeles deslizantes en pared", zone: "Cuello y Hombros", svgKey: "thorax", desc: "Movilidad escapular y elevación de brazos manteniendo espalda alta y lumbar apoyadas.", usedIn: "Días 6, 13, 14, 20, 23, 27" },
+      { id: "mov5", name: "Rotación lumbar tumbado", zone: "Cadera y Lumbar", svgKey: "lumbar", desc: "Giro suave de rodillas flexionadas de lado a lado con ambos hombros firmes en el suelo.", usedIn: "Días 4, 7, 11, 18, 21, 24, 26, 29, 30" },
+      { id: "mov6", name: "Gato-camello controlado", zone: "Espalda y Tórax", svgKey: "lumbar", desc: "Flexión y extensión segmentada de toda la columna acompañando con la respiración.", usedIn: "Días 4, 11, 18, 24, 29 + Comodín 7m" },
+      { id: "mov7", name: "Zancada baja con retroversión pélvica", zone: "Cadera y Lumbar", svgKey: "hip", desc: "Estiramiento activo de flexores de cadera activando el glúteo de la pierna trasera.", usedIn: "Días 3, 10, 17, 22, 24, 26, 29" },
+      { id: "mov8", name: "Cambios de cadera 90/90", zone: "Cadera y Lumbar", svgKey: "hip", desc: "Rotación interna y externa de ambas caderas sentado sin encorvar la espalda.", usedIn: "Días 10, 17 + Mes 3" },
+      { id: "mov9", name: "Dorsiflexión de tobillo en pared", zone: "Tobillos y Piernas", svgKey: "ankle", desc: "Avance controlado de rodilla hacia pared manteniendo el talón completamente pegado.", usedIn: "Días 5, 12, 19, 24, 30 + Comodín 10m" },
+      { id: "mov10", name: "Equilibrio unipodal controlado", zone: "Tobillos y Piernas", svgKey: "ankle", desc: "Estabilidad a una pierna activando apoyo de pie y control de cadera.", usedIn: "Días 5, 12, 19, 25" },
+      { id: "mov11", name: "Sentadilla controlada / asistida", zone: "Fuerza Base", svgKey: "strength", desc: "Descenso lento manteniendo pecho erguido, talones firmes y rodillas alineadas.", usedIn: "Días 15, 21, 25 + Mes 2" },
+      { id: "mov12", name: "Dead Bug y Puente de Glúteo", zone: "Fuerza Base", svgKey: "lumbar", desc: "Estabilidad de faja abdominal profunda y activación posterior sin cargar lumbares.", usedIn: "Días 3, 11, 17, 27 + Mes 2" }
+    ];
+
+    // =========================================================================
+    // ESTADO GLOBAL DE LA APLICACIÓN
+    // =========================================================================
+    let currentView = 'landing';
+    let completedDays = JSON.parse(localStorage.getItem(STORAGE_KEYS.completedDays) || '{}');
+    let clubCompleted = JSON.parse(localStorage.getItem(STORAGE_KEYS.clubCompleted) || '{}');
+    let freeTrialEmail = localStorage.getItem(STORAGE_KEYS.freeEmail) || '';
+    let leadsList = JSON.parse(localStorage.getItem(STORAGE_KEYS.leadsList) || '[]');
+    let activePlan = localStorage.getItem(STORAGE_KEYS.activePlan) || 'Vista Previa · Método 30D';
+    let hasUnlockedAccess = localStorage.getItem(STORAGE_KEYS.hasUnlockedAccess) === 'true';
+    let paymentLinks = JSON.parse(localStorage.getItem(STORAGE_KEYS.paymentLinks) || JSON.stringify(DEFAULT_PAYMENT_LINKS));
+
+    let selectedRetoDay = 1;
+    let activeWeekFilter = 0;
+    let currentDemoMode = 'standard';
+    let selectedClubMonth = 2;
+    let selectedLibraryZone = 'Todos';
+    let landingSyllabusTab = 'reto';
+
+    // =========================================================================
+    // PANEL PRIVADO DE CREADORES (ÁLEX & D4RIXZ)
+    // =========================================================================
+    function openCreatorConfigModal() {
+      const modal = document.getElementById('creatorConfigModal');
+      if (!modal) return;
+      const base = window.location.origin + window.location.pathname;
+      document.getElementById('thankUrlReto').textContent = `${base}?acceso=reto30`;
+      document.getElementById('thankUrlPack').textContent = `${base}?acceso=pack`;
+      document.getElementById('thankUrlClub').textContent = `${base}?acceso=club`;
+      document.getElementById('utmYoutube').textContent = `${base}?utm_source=youtube&utm_medium=shorts&utm_campaign=reto30`;
+      document.getElementById('utmTiktok').textContent = `${base}?utm_source=tiktok&utm_medium=video&utm_campaign=reto30`;
+      document.getElementById('utmInstagram').textContent = `${base}?utm_source=instagram&utm_medium=reels&utm_campaign=reto30`;
+      document.getElementById('leadsCountLabel').textContent = String(leadsList.length);
+
+      document.getElementById('inputLinkReto30').value = paymentLinks.reto30 || '';
+      document.getElementById('inputLinkPack').value = paymentLinks.packCompleto || '';
+      document.getElementById('inputLinkClub').value = paymentLinks.clubMensual || '';
+
+      if (creatorPanelUnlocked) {
+        document.getElementById('creatorPinGate').classList.add('hidden');
+        document.getElementById('creatorPanelBody').classList.remove('hidden');
+        renderAdminClipsManager();
+      } else {
+        document.getElementById('creatorPinGate').classList.remove('hidden');
+        document.getElementById('creatorPanelBody').classList.add('hidden');
+        document.getElementById('creatorPinInput').value = '';
+      }
+      modal.classList.remove('hidden');
+    }
+
+    function unlockCreatorPanel(e) {
+      e.preventDefault();
+      const entered = (document.getElementById('creatorPinInput').value || '').trim();
+      const savedPin = localStorage.getItem(ADMIN_PIN_STORAGE) || DEFAULT_CREATOR_PIN;
+      if (entered === savedPin) {
+        creatorPanelUnlocked = true;
+        document.getElementById('creatorPinGate').classList.add('hidden');
+        document.getElementById('creatorPanelBody').classList.remove('hidden');
+        renderAdminClipsManager();
+        showToast('🔓 Panel privado de Álex & D4rixz desbloqueado.');
+      } else {
+        showToast('❌ PIN incorrecto. Inténtalo de nuevo.');
+      }
+    }
+
+    function updateCreatorPin() {
+      const val = (document.getElementById('newCreatorPinInput').value || '').trim();
+      if (val.length < 4) {
+        showToast('El PIN debe tener al menos 4 dígitos.');
+        return;
+      }
+      localStorage.setItem(ADMIN_PIN_STORAGE, val);
+      document.getElementById('newCreatorPinInput').value = '';
+      showToast('🔐 Nuevo PIN de equipo guardado.');
+    }
+
+    function renderAdminClipsManager() {
+      const container = document.getElementById('adminClipsManagerList');
+      if (!container) return;
+
+      let loadedCount = 0;
+      const allIds = [];
+      ADMIN_CLIPS_CATALOG.forEach(g => g.items.forEach(i => {
+        allIds.push(i.id);
+        if ((customClipUrls[i.id] || '').trim()) loadedCount++;
+      }));
+      document.getElementById('clipsUploadedCounter').textContent = `${loadedCount} / ${allIds.length} vídeos cargados`;
+
+      container.innerHTML = ADMIN_CLIPS_CATALOG.map(group => `
+        <div class="rounded-2xl bg-slate-50 border border-slate-200 p-3.5 space-y-2.5">
+          <p class="font-display font-extrabold text-xs text-brand-navy uppercase tracking-wide">${group.group}</p>
+          <div class="space-y-2">
+            ${group.items.map(item => {
+              const val = customClipUrls[item.id] || '';
+              const hasVideo = !!val.trim();
+              const isBlob = val.startsWith('blob:');
+              return `
+                <div class="bg-white rounded-xl border ${hasVideo ? 'border-emerald-300' : 'border-slate-200'} p-2.5 space-y-1.5">
+                  <div class="flex flex-wrap items-center justify-between gap-1">
+                    <span class="font-display font-bold text-xs text-brand-navy">${item.name}</span>
+                    <span class="text-[10px] font-semibold ${hasVideo ? 'text-emerald-600' : 'text-slate-400'}">
+                      ${isBlob ? '⚠️ Local (subir a /clips/ para publicar)' : hasVideo ? '✓ Activo en cascada' : 'Sin vídeo aún'}
+                    </span>
+                  </div>
+                  <p class="text-[10px] text-slate-500">Se actualiza en: <strong>${item.impact}</strong></p>
+                  <div class="flex items-center gap-1.5">
+                    <input id="admin-clip-${item.id}" type="text" value="${isBlob ? '' : val}" placeholder="URL .mp4 o ./clips/${item.id}.mp4" class="flex-1 px-2.5 py-1.5 rounded-lg border border-slate-300 text-[11px] font-mono focus:outline-none focus:border-brand-orange" />
+                    <label class="px-2.5 py-1.5 rounded-lg bg-slate-100 hover:bg-slate-200 text-brand-navy font-display font-bold text-[10px] cursor-pointer shrink-0" title="Probar un archivo MP4 desde tu ordenador">
+                      📁 Subir MP4
+                      <input type="file" accept="video/mp4,video/webm" onchange="handleLocalClipFile('${item.id}', this)" class="hidden" />
+                    </label>
+                  </div>
+                </div>
+              `;
+            }).join('')}
+          </div>
+        </div>
+      `).join('');
+    }
+
+    function handleLocalClipFile(clipId, inputEl) {
+      const file = inputEl.files && inputEl.files[0];
+      if (!file) return;
+      const blobUrl = URL.createObjectURL(file);
+      customClipUrls[clipId] = blobUrl;
+      renderAdminClipsManager();
+      refreshAllViewsAfterClipChange();
+      showToast(`🎬 Vista previa cargada para "${clipId}". Recuerda subir el archivo a /clips/${clipId}.mp4 al publicar.`);
+    }
+
+    function autofillRelativeClipPaths() {
+      ADMIN_CLIPS_CATALOG.forEach(group => {
+        group.items.forEach(item => {
+          const input = document.getElementById(`admin-clip-${item.id}`);
+          if (input && !input.value.trim()) {
+            input.value = `./clips/${item.id}.mp4`;
+          }
+        });
+      });
+      showToast('✨ Rutas ./clips/*.mp4 rellenadas. Pulsa "Aplicar Todos los Vídeos".');
+    }
+
+    function saveAllAdminClips() {
+      ADMIN_CLIPS_CATALOG.forEach(group => {
+        group.items.forEach(item => {
+          const input = document.getElementById(`admin-clip-${item.id}`);
+          if (input) {
+            const v = input.value.trim();
+            if (v) {
+              customClipUrls[item.id] = v;
+            } else if (!String(customClipUrls[item.id] || '').startsWith('blob:')) {
+              delete customClipUrls[item.id];
+            }
+          }
+        });
+      });
+      localStorage.setItem(STORAGE_KEYS.customClips, JSON.stringify(customClipUrls));
+      renderAdminClipsManager();
+      refreshAllViewsAfterClipChange();
+      showToast('✅ Todos los vídeos se han actualizado en cascada en todos los días y sesiones.');
+    }
+
+    function refreshAllViewsAfterClipChange() {
+      selectFreeTrialDay(currentFreeDay);
+      if (currentView === 'student') {
+        selectRetoDay(selectedRetoDay);
+        renderClubMonth();
+        renderLibraryGrid();
+      }
+    }
+
+    function savePaymentLinks(e) {
+      e.preventDefault();
+      paymentLinks = {
+        reto30: document.getElementById('inputLinkReto30').value.trim(),
+        packCompleto: document.getElementById('inputLinkPack').value.trim(),
+        clubMensual: document.getElementById('inputLinkClub').value.trim()
+      };
+      localStorage.setItem(STORAGE_KEYS.paymentLinks, JSON.stringify(paymentLinks));
+      showToast('💳 Enlaces de pago guardados correctamente.');
+    }
+
+    // =========================================================================
+    // UTILIDADES, UTM, PORTAPAPELES Y NOTIFICACIONES
+    // =========================================================================
+    function showToast(msg) {
+      const stack = document.getElementById('toastStack');
+      const el = document.createElement('div');
+      el.className = 'bg-brand-navy text-white text-xs font-semibold px-4 py-3 rounded-2xl shadow-xl border border-slate-700 pointer-events-auto transition-all duration-300';
+      el.textContent = msg;
+      stack.appendChild(el);
+      setTimeout(() => {
+        el.style.opacity = '0';
+        el.style.transform = 'translateY(8px)';
+        setTimeout(() => el.remove(), 300);
+      }, 3200);
+    }
+
+    function copyTextValue(text) {
+      const temp = document.createElement('textarea');
+      temp.value = text;
+      document.body.appendChild(temp);
+      temp.select();
+      try {
+        document.execCommand('copy');
+        showToast('📋 Enlace copiado al portapapeles.');
+      } catch (e) {
+        showToast('No se pudo copiar automáticamente.');
+      }
+      document.body.removeChild(temp);
+    }
+
+    function captureUtmAndReturnParams() {
+      const params = new URLSearchParams(window.location.search);
+      const utmKeys = ['utm_source', 'utm_medium', 'utm_campaign', 'utm_content'];
+      const storedUtm = JSON.parse(localStorage.getItem(STORAGE_KEYS.utmParams) || '{}');
+      let updated = false;
+      utmKeys.forEach(k => {
+        if (params.get(k)) {
+          storedUtm[k] = params.get(k);
+          updated = true;
+        }
+      });
+      if (updated) {
+        localStorage.setItem(STORAGE_KEYS.utmParams, JSON.stringify(storedUtm));
+      }
+
+      const acceso = (params.get('acceso') || '').toLowerCase();
+      if (acceso) {
+        const planMap = {
+          reto30: 'Reto 30 Días · Movilidad y Postura',
+          pack: 'Pack Completo: Reto 30 Días + Plan Anual Club',
+          packcompleto: 'Pack Completo: Reto 30 Días + Plan Anual Club',
+          club: 'Club Mensual 30D (Plan Anual)'
+        };
+        activePlan = planMap[acceso] || 'Acceso Completo · Método 30D';
+        hasUnlockedAccess = true;
+        localStorage.setItem(STORAGE_KEYS.activePlan, activePlan);
+        localStorage.setItem(STORAGE_KEYS.hasUnlockedAccess, 'true');
+        syncProgressToSupabase();
+
+        if (window.history && window.history.replaceState) {
+          window.history.replaceState({}, document.title, window.location.pathname);
+        }
+        updateHeaderSessionIndicator();
+        switchAppView('student');
+        showToast(`🎉 ¡Bienvenido! Acceso activado: ${activePlan}`);
+      }
+    }
+
+    function appendStoredUtmToUrl(baseUrl) {
+      try {
+        const urlObj = new URL(baseUrl);
+        const storedUtm = JSON.parse(localStorage.getItem(STORAGE_KEYS.utmParams) || '{}');
+        Object.keys(storedUtm).forEach(k => {
+          if (!urlObj.searchParams.has(k)) {
+            urlObj.searchParams.set(k, storedUtm[k]);
+          }
+        });
+        return urlObj.toString();
+      } catch (e) {
+        return baseUrl;
+      }
+    }
+
+    function updateHeaderSessionIndicator() {
+      const dot = document.getElementById('sessionIndicatorDot');
+      const btnText = document.getElementById('toggleViewBtnText');
+      if (currentView === 'student') {
+        btnText.textContent = 'Volver a la Web Pública';
+        dot.className = 'w-2 h-2 rounded-full bg-emerald-400';
+      } else if (currentSupabaseUser || hasUnlockedAccess) {
+        btnText.textContent = 'Área de Alumno (Activa)';
+        dot.className = 'w-2 h-2 rounded-full bg-emerald-400';
+      } else {
+        btnText.textContent = 'Área de Alumno';
+        dot.className = 'w-2 h-2 rounded-full bg-brand-orange';
+      }
+    }
+
+    function playGentleBeep() {
+      try {
+        const ctx = new (window.AudioContext || window.webkitAudioContext)();
+        const osc = ctx.createOscillator();
+        const gain = ctx.createGain();
+        osc.type = 'sine';
+        osc.frequency.setValueAtTime(660, ctx.currentTime);
+        osc.frequency.exponentialRampToValueAtTime(880, ctx.currentTime + 0.25);
+        gain.gain.setValueAtTime(0.15, ctx.currentTime);
+        gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.35);
+        osc.connect(gain);
+        gain.connect(ctx.destination);
+        osc.start();
+        osc.stop(ctx.currentTime + 0.36);
+      } catch (e) {}
+    }
+
+    // =========================================================================
+    // ALTERNAR ENTRE LANDING Y ÁREA DE ALUMNO (CON AUTH SUPABASE)
+    // =========================================================================
+    function switchAppView(target) {
+      currentView = target;
+      const landing = document.getElementById('landingView');
+      const student = document.getElementById('studentView');
+      const navLinks = document.getElementById('landingNavLinks');
+
+      if (target === 'student') {
+        landing.classList.add('hidden');
+        student.classList.remove('hidden');
+        navLinks.classList.add('hidden');
+        navLinks.classList.remove('md:flex');
+        document.getElementById('studentPlanStatusBadge').textContent = activePlan;
+        updateGlobalStreakUI();
+        renderRetoGridAndIndex();
+        selectRetoDay(selectedRetoDay);
+        renderClubMonth();
+        renderLibraryGrid();
+      } else {
+        student.classList.add('hidden');
+        landing.classList.remove('hidden');
+        navLinks.classList.add('md:flex');
+      }
+      updateHeaderSessionIndicator();
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    function toggleAppView() {
+      if (currentView === 'student') {
+        switchAppView('landing');
+        return;
+      }
+      if (!currentSupabaseUser) {
+        openStudentAuthModal();
+      } else {
+        switchAppView('student');
+      }
+    }
+
+    function toggleFaqItem(btn) {
+      const box = btn.closest('.faq-box');
+      const panel = box.querySelector('.faq-panel');
+      const symbol = btn.querySelector('.faq-symbol');
+      const isHidden = panel.classList.contains('hidden');
+      if (isHidden) {
+        panel.classList.remove('hidden');
+        symbol.textContent = '−';
+      } else {
+        panel.classList.add('hidden');
+        symbol.textContent = '+';
+      }
+    }
+
+    // =========================================================================
+    // MINI-RETO GRATUITO DE 3 DÍAS (EN LANDING)
+    // =========================================================================
+    const FREE_DAYS_DATA = {
+      1: {
+        badge: "DÍA 1 DE 3 · SESIÓN DE PRUEBA GRATUITA",
+        title: "Descarga de cuello y trapecios + postura sentado",
+        svgKey: "neck",
+        duration: "35 seg / lado",
+        caption: "Inclinación cervical controlada sin tirones",
+        mainStep: "2. Bloque Principal (6 min): Inclina lentamente la oreja derecha hacia el hombro derecho sin subir el hombro contrario. Mantén 35 seg por lado (3 rondas) + 8 retracciones cervicales suaves.",
+        error: "Tirar fuerte de la cabeza con la mano o encoger los hombros hacia las orejas.",
+        easy: "Hazlo sentado apoyando la espalda en el respaldo y reduce el ángulo a la mitad."
+      },
+      2: {
+        badge: "DÍA 2 DE 3 · DESBLOQUEADO GRATIS",
+        title: "Movilidad torácica y apertura de pecho",
+        svgKey: "thorax",
+        duration: "6 reps / lado",
+        caption: "Apertura torácica en pared (Libro abierto)",
+        mainStep: "2. Bloque Principal (6 min): Con cadera pegada a la pared, abre el brazo exterior dibujando un arco lento siguiendo la mano con la mirada (3 rondas de 6 repeticiones por lado).",
+        error: "Girar toda la cadera y los pies en lugar de rotar solo la parte alta de la espalda.",
+        easy: "Hazlo sentado en silla girando suave el tronco con manos cruzadas en los hombros."
+      },
+      3: {
+        badge: "DÍA 3 DE 3 · DESBLOQUEADO GRATIS",
+        title: "Desbloqueo de cadera y movilidad lumbar suave",
+        svgKey: "lumbar",
+        duration: "45 seg / ronda",
+        caption: "Rotación lumbar tumbado con hombros fijos",
+        mainStep: "2. Bloque Principal (6 min): Tumbado boca arriba con rodillas flexionadas, lleva ambas rodillas suave de lado a lado sin despegar los hombros del suelo (3 rondas de 45 seg).",
+        error: "Dejar caer las piernas de golpe por gravedad o levantar el hombro opuesto.",
+        easy: "Coloca una almohada entre las rodillas y reduce el giro a un ángulo cómodo."
+      }
+    };
+
+    let currentFreeDay = 1;
+    let freeTimerTotal = 45;
+    let freeTimerSec = 45;
+    let freeTimerInt = null;
+    let freeTimerRunning = false;
+
+    function selectFreeTrialDay(day) {
+      if (day > 1 && !freeTrialEmail) {
+        showToast('🔒 Introduce tu correo abajo para desbloquear gratis los Días 2 y 3.');
+        document.getElementById('freeTrialEmailInput').focus();
+        return;
+      }
+      currentFreeDay = day;
+      [1, 2, 3].forEach(d => {
+        const tab = document.getElementById(`freeTab-${d}`);
+        if (d === day) {
+          tab.className = 'px-4 py-2.5 rounded-t-2xl font-display font-extrabold text-xs sm:text-sm bg-white text-brand-navy cursor-pointer transition flex items-center gap-1.5';
+        } else {
+          tab.className = 'px-4 py-2.5 rounded-t-2xl font-display font-extrabold text-xs sm:text-sm bg-white/10 text-slate-300 hover:text-white cursor-pointer transition flex items-center gap-1.5';
+        }
+      });
+
+      const data = FREE_DAYS_DATA[day];
+      document.getElementById('freeDayBadge').textContent = data.badge;
+      document.getElementById('freeDayTitle').textContent = data.title;
+      document.getElementById('freeMotionSvgBox').innerHTML = renderClipPlayerHTML(data.svgKey, false);
+      document.getElementById('freeMotionDuration').textContent = data.duration;
+      document.getElementById('freeMotionCaption').textContent = data.caption;
+      document.getElementById('freeMainStep').innerHTML = `<strong class="text-brand-navy">${data.mainStep.split(':')[0]}:</strong>${data.mainStep.split(':').slice(1).join(':')}`;
+      document.getElementById('freeErrorText').textContent = data.error;
+      document.getElementById('freeEasyText').textContent = data.easy;
+    }
+
+    async function unlockFreeDays(e) {
+      e.preventDefault();
+      const email = document.getElementById('freeTrialEmailInput').value.trim();
+      if (!email) return;
+      freeTrialEmail = email;
+      localStorage.setItem(STORAGE_KEYS.freeEmail, email);
+
+      const storedUtm = JSON.parse(localStorage.getItem(STORAGE_KEYS.utmParams) || '{}');
+      const source = storedUtm.utm_source || 'directo';
+
+      if (!leadsList.some(l => l.email.toLowerCase() === email.toLowerCase())) {
+        leadsList.push({
+          email,
+          date: new Date().toISOString(),
+          source
+        });
+        localStorage.setItem(STORAGE_KEYS.leadsList, JSON.stringify(leadsList));
+      }
+
+      // Intentar guardar también en tabla 'leads' de Supabase si existe
+      supabaseClient.from('leads').insert({ email, origen: source }).then(() => {});
+
+      applyFreeTrialUnlockUI();
+      selectFreeTrialDay(2);
+      showToast('🎉 ¡Días 2 y 3 desbloqueados! Ya puedes probarlos.');
+    }
+
+    function applyFreeTrialUnlockUI() {
+      if (!freeTrialEmail) return;
+      document.getElementById('freeLock-2').textContent = '✓';
+      document.getElementById('freeLock-3').textContent = '✓';
+      document.getElementById('freeUnlockBox').classList.add('hidden');
+      document.getElementById('freeUnlockedBanner').classList.remove('hidden');
+      document.getElementById('unlockedEmailLabel').textContent = freeTrialEmail;
+    }
+
+    function formatClock(sec) {
+      const m = Math.floor(sec / 60);
+      const s = sec % 60;
+      return `${m < 10 ? '0' + m : m}:${s < 10 ? '0' + s : s}`;
+    }
+
+    // =========================================================================
+    // PESTAÑA 1: RETO DE 30 DÍAS
+    // =========================================================================
+    function updateGlobalStreakUI() {
+      const count = Object.keys(completedDays).length;
+      const pct = Math.round((count / 30) * 100);
+      const label = document.getElementById('streakCounterLabel');
+      const bar = document.getElementById('streakProgressBar');
+      if (label) label.textContent = `${count} / 30 días (${pct}%)`;
+      if (bar) bar.style.width = `${pct}%`;
+
+      const banner = document.getElementById('clubContinuityBanner');
+      if (banner) {
+        if (selectedRetoDay >= 25 || count >= 24) {
+          banner.classList.remove('hidden');
+        } else {
+          banner.classList.add('hidden');
+        }
+      }
+    }
+
+    function filterRetoWeek(weekNum) {
+      activeWeekFilter = weekNum;
+      [0, 1, 2, 3, 4].forEach(w => {
+        const btn = document.getElementById(`wFilter-${w}`);
+        if (!btn) return;
+        if (w === weekNum) {
+          btn.className = 'w-filter py-1.5 rounded-lg text-[11px] font-display font-extrabold bg-brand-navy text-white cursor-pointer';
+        } else {
+          btn.className = 'w-filter py-1.5 rounded-lg text-[11px] font-display font-extrabold bg-slate-100 text-slate-600 hover:bg-slate-200 cursor-pointer';
+        }
+      });
+      const weekLabels = {
+        0: 'Todos los días (1–30)',
+        1: 'Semana 1 (Días 1–7)',
+        2: 'Semana 2 (Días 8–14)',
+        3: 'Semana 3 (Días 15–21)',
+        4: 'Semana 4 (Días 22–30)'
+      };
+      const badge = document.getElementById('weekBadgeLabel');
+      if (badge) badge.textContent = weekLabels[weekNum] || '';
+      renderRetoGridAndIndex();
+    }
+
+    function renderRetoGridAndIndex() {
+      const grid = document.getElementById('retoDaysGrid');
+      const indexList = document.getElementById('retoDayListIndex');
+      if (!grid || !indexList) return;
+
+      const filtered = activeWeekFilter === 0
+        ? RETO_30_DAYS
+        : RETO_30_DAYS.filter(d => d.week === activeWeekFilter);
+
+      grid.innerHTML = filtered.map(d => {
+        const isDone = !!completedDays[d.day];
+        const isSelected = d.day === selectedRetoDay;
+        let cls = 'h-10 rounded-xl font-display font-extrabold text-xs flex items-center justify-center cursor-pointer transition border ';
+        if (isSelected) {
+          cls += 'bg-brand-orange text-white border-brand-orange shadow-sm scale-105';
+        } else if (isDone) {
+          cls += 'bg-emerald-500 text-white border-emerald-600';
+        } else {
+          cls += 'bg-slate-50 text-brand-navy border-slate-200 hover:border-brand-orange';
+        }
+        return `<button type="button" onclick="selectRetoDay(${d.day})" class="${cls}">${d.day}</button>`;
+      }).join('');
+
+      indexList.innerHTML = filtered.map(d => {
+        const isDone = !!completedDays[d.day];
+        const isSelected = d.day === selectedRetoDay;
+        return `
+          <button type="button" onclick="selectRetoDay(${d.day})" class="w-full text-left px-3 py-2 rounded-xl text-xs flex items-center justify-between gap-2 cursor-pointer transition ${isSelected ? 'bg-orange-50 border border-brand-orange text-brand-navy font-bold' : 'hover:bg-slate-50 text-slate-600'}">
+            <span class="truncate"><strong class="text-brand-navy">Día ${d.day}:</strong> ${d.title}</span>
+            <span class="shrink-0 font-bold ${isDone ? 'text-emerald-600' : 'text-slate-400'}">${isDone ? '✓' : '→'}</span>
+          </button>
+        `;
+      }).join('');
+    }
+
+    function setDemoMode(mode) {
+      currentDemoMode = mode;
+      const btnStd = document.getElementById('btnDemoStandard');
+      const btnEasy = document.getElementById('btnDemoEasy');
+      const btnIntense = document.getElementById('btnDemoIntense');
+      const badge = document.getElementById('demoModeBadge');
+      const cue = document.getElementById('sessionMoveVisualCue');
+      const dayObj = RETO_30_DAYS.find(d => d.day === selectedRetoDay) || RETO_30_DAYS[0];
+
+      [btnStd, btnEasy, btnIntense].forEach(b => {
+        if (b) b.className = 'px-2.5 py-1 rounded-lg text-[11px] font-display font-extrabold text-slate-600 hover:text-brand-navy cursor-pointer transition';
+      });
+
+      if (mode === 'easy') {
+        if (btnEasy) btnEasy.className = 'px-2.5 py-1 rounded-lg text-[11px] font-display font-extrabold bg-blue-600 text-white cursor-pointer transition';
+        badge.className = 'inline-block px-2.5 py-0.5 rounded-md bg-blue-100 text-blue-900 font-display font-extrabold text-[11px]';
+        badge.textContent = 'NIVEL SUAVE · RANGO ADAPTADO';
+        cue.textContent = dayObj.easy;
+      } else if (mode === 'intense') {
+        if (btnIntense) btnIntense.className = 'px-2.5 py-1 rounded-lg text-[11px] font-display font-extrabold bg-brand-orange text-white cursor-pointer transition';
+        badge.className = 'inline-block px-2.5 py-0.5 rounded-md bg-orange-100 text-brand-orangeDark font-display font-extrabold text-[11px]';
+        badge.textContent = 'NIVEL INTENSO · +1 RONDA Y PAUSA 3s';
+        cue.textContent = 'Añade 1 ronda extra, mantén una pausa isométrica de 3 segundos en el punto de máximo control y exhala largo.';
+      } else {
+        if (btnStd) btnStd.className = 'px-2.5 py-1 rounded-lg text-[11px] font-display font-extrabold bg-brand-navy text-white cursor-pointer transition';
+        badge.className = 'inline-block px-2.5 py-0.5 rounded-md bg-slate-200 text-brand-navy font-display font-extrabold text-[11px]';
+        badge.textContent = 'NIVEL INTERMEDIO · CONTROL ESTÁNDAR';
+        cue.textContent = 'Mantén la mirada al frente, hombros relajados abajo y realiza el movimiento lento sin tirones acompañando con exhalación suave.';
+      }
+    }
+
+    function selectRetoDay(dayNum) {
+      selectedRetoDay = dayNum;
+      const d = RETO_30_DAYS.find(item => item.day === dayNum) || RETO_30_DAYS[0];
+
+      document.getElementById('sessionDayTag').textContent = `DÍA ${d.day} · ${d.weekName.toUpperCase()}`;
+      document.getElementById('sessionTimeTag').textContent = `⏱ ${d.duration}/día`;
+      document.getElementById('sessionTitle').textContent = `Día ${d.day}: ${d.title}`;
+      document.getElementById('sessionSvgContainer').innerHTML = renderClipPlayerHTML(d.svgKey, false);
+      document.getElementById('sessionMoveName').textContent = d.moveName;
+      document.getElementById('sessionWarmup').textContent = d.warmup;
+      document.getElementById('sessionMainBlock').textContent = d.main;
+      document.getElementById('sessionErrorTip').textContent = d.error;
+      document.getElementById('sessionEasyTip').textContent = d.easy;
+      document.getElementById('sessionCooldown').textContent = d.cooldown;
+
+      setDemoMode(currentDemoMode);
+      renderRetoGridAndIndex();
+      updateGlobalStreakUI();
+    }
+
+    function toggleDayCompletion() {
+      if (completedDays[selectedRetoDay]) {
+        delete completedDays[selectedRetoDay];
+        showToast(`Día ${selectedRetoDay} desmarcado.`);
+      } else {
+        completedDays[selectedRetoDay] = true;
+        showToast(`🔥 ¡Día ${selectedRetoDay} completado y guardado en la nube!`);
+      }
+      localStorage.setItem(STORAGE_KEYS.completedDays, JSON.stringify(completedDays));
+      syncProgressToSupabase();
+      renderRetoGridAndIndex();
+      updateGlobalStreakUI();
+    }
+
+    function resetAllStudentProgress() {
+      completedDays = {};
+      clubCompleted = {};
+      localStorage.removeItem(STORAGE_KEYS.completedDays);
+      localStorage.removeItem(STORAGE_KEYS.clubCompleted);
+      syncProgressToSupabase();
+      renderRetoGridAndIndex();
+      renderClubMonth();
+      updateGlobalStreakUI();
+      showToast('Progreso reiniciado a cero.');
+    }
+
+    let portalTimerTotal = 45;
+    let portalTimerSec = 45;
+    let portalTimerInt = null;
+    let portalTimerRunning = false;
+
+    function setPortalTimer(sec) {
+      clearInterval(portalTimerInt);
+      portalTimerRunning = false;
+      portalTimerTotal = sec;
+      portalTimerSec = sec;
+      document.getElementById('portalTimerClock').textContent = formatClock(sec);
+      document.getElementById('portalTimerBtn').textContent = '▶ Iniciar';
+    }
+
+    function resetPortalTimer() {
+      setPortalTimer(portalTimerTotal);
+    }
+
+    function togglePortalTimer() {
+      const btn = document.getElementById('portalTimerBtn');
+      if (portalTimerRunning) {
+        clearInterval(portalTimerInt);
+        portalTimerRunning = false;
+        btn.textContent = '▶ Reanudar';
+        return;
+      }
+      if (portalTimerSec <= 0) portalTimerSec = portalTimerTotal;
+      portalTimerRunning = true;
+      btn.textContent = '⏸ Pausar';
+      portalTimerInt = setInterval(() => {
+        portalTimerSec--;
+        document.getElementById('portalTimerClock').textContent = formatClock(Math.max(0, portalTimerSec));
+        if (portalTimerSec <= 0) {
+          clearInterval(portalTimerInt);
+          portalTimerRunning = false;
+          btn.textContent = '▶ Iniciar';
+          playGentleBeep();
+          showToast('⏱ ¡Serie completada!');
+        }
+      }, 1000);
+    }
+
+    function switchStudentTab(tab) {
+      ['reto', 'club', 'comodines', 'biblioteca'].forEach(t => {
+        const panel = document.getElementById(`panel-${t}`);
+        const btn = document.getElementById(`sTab-${t}`);
+        if (panel) panel.classList.toggle('hidden', t !== tab);
+        if (btn) {
+          btn.className = t === tab
+            ? 'student-tab px-4 py-2.5 rounded-xl font-display font-extrabold text-xs sm:text-sm whitespace-nowrap cursor-pointer transition bg-brand-orange text-white'
+            : 'student-tab px-4 py-2.5 rounded-xl font-display font-extrabold text-xs sm:text-sm whitespace-nowrap cursor-pointer transition bg-white/10 text-slate-300 hover:text-white';
+        }
+      });
+      if (tab === 'club') renderClubMonth();
+      if (tab === 'biblioteca') renderLibraryGrid();
+    }
+
+    function handleQuickModuleSelect(val) {
+      if (val === 'reto') {
+        switchStudentTab('reto');
+      } else if (val === 'club2') {
+        switchStudentTab('club');
+        selectClubMonth(2);
+      } else if (val === 'club3') {
+        switchStudentTab('club');
+        selectClubMonth(3);
+      } else if (val === 'comodines') {
+        switchStudentTab('comodines');
+      }
+    }
+
+    function openCheckout(planKey) {
+      const plansInfo = {
+        reto30: { name: 'Reto 30 Días · Movilidad y Postura' },
+        packCompleto: { name: 'Pack Completo: Reto 30 Días + Plan Anual Club' },
+        clubMensual: { name: 'Club Mensual 30D (Plan Anual 12 Meses)' }
+      };
+      const info = plansInfo[planKey] || plansInfo.packCompleto;
+      const link = paymentLinks[planKey];
+
+      if (link && link.trim().startsWith('http')) {
+        window.open(appendStoredUtmToUrl(link.trim()), '_blank', 'noopener,noreferrer');
+        return;
+      }
+
+      activePlan = info.name;
+      hasUnlockedAccess = true;
+      localStorage.setItem(STORAGE_KEYS.activePlan, activePlan);
+      localStorage.setItem(STORAGE_KEYS.hasUnlockedAccess, 'true');
+      syncProgressToSupabase();
+      if (!currentSupabaseUser) {
+        openStudentAuthModal();
+      } else {
+        switchAppView('student');
+      }
+      showToast(`✓ Plan seleccionado: ${info.name}`);
+    }
+
+    function exportLeadsCsv() {
+      if (!leadsList.length) {
+        showToast('Aún no hay correos registrados en este dispositivo.');
+        return;
+      }
+      const rows = [['Email', 'Fecha', 'Origen_UTM'], ...leadsList.map(l => [l.email, l.date, l.source])];
+      const csv = rows.map(r => r.map(v => `"${String(v).replace(/"/g, '""')}"`).join(',')).join('\n');
+      const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = 'leads_30diasconalex.csv';
+      a.click();
+      URL.revokeObjectURL(url);
+      showToast('⬇ CSV de correos exportado.');
+    }
+
+    function exportProductionHtml() {
+      let html = '<!DOCTYPE html>\n' + document.documentElement.outerHTML;
+      html = html.replace(
+        /const DEFAULT_PAYMENT_LINKS = \{[\s\S]*?\};/,
+        `const DEFAULT_PAYMENT_LINKS = ${JSON.stringify(paymentLinks, null, 2)};`
+      );
+      html = html.replace(
+        /const DEFAULT_CLIP_URLS = \{[\s\S]*?\};/,
+        `const DEFAULT_CLIP_URLS = ${JSON.stringify(customClipUrls, null, 2)};`
+      );
+      const blob = new Blob([html], { type: 'text/html;charset=utf-8' });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = 'index.html';
+      a.click();
+      URL.revokeObjectURL(url);
+      showToast('⬇ Archivo index.html listo para subir a hosting descargado.');
+    }
+
+    function openLegalModal(type) {
+      const titles = {
+        salud: 'Aviso Importante de Salud y Seguridad',
+        legal: 'Aviso Legal',
+        privacidad: 'Política de Privacidad (RGPD)',
+        cookies: 'Política de Cookies',
+        terminos: 'Términos y Condiciones de Uso'
+      };
+      const bodies = {
+        salud: '<p>Este programa tiene fines exclusivamente educativos y de organización de hábitos de movimiento y actividad física general. No constituye ni sustituye el consejo, diagnóstico o tratamiento médico ni de fisioterapia.</p><p>Si sientes dolor agudo, pinchazos, mareos o tienes una lesión previa, detén el ejercicio de inmediato y consulta con un profesional sanitario.</p>',
+        legal: '<p>Titular del sitio web: Proyecto 30 Días con Álex (Método 30D). Actividad: Divulgación digital de hábitos saludables, movilidad y rutinas de ejercicio en casa.</p>',
+        privacidad: '<p>Los datos facilitados (correo electrónico para el Mini-Reto gratuito o gestión de acceso) se utilizan únicamente para enviarte los recursos solicitados y gestionar tu suscripción conforme al Reglamento General de Protección de Datos (RGPD). Puedes solicitar su eliminación en cualquier momento.</p>',
+        cookies: '<p>Esta web utiliza almacenamiento local del navegador (localStorage) estrictamente necesario para guardar tu progreso en los 30 días, tus sesiones completadas del Club y tus preferencias de sesión.</p>',
+        terminos: '<p>El acceso al Reto de 30 Días o al Club Mensual es personal e intransferible. En la modalidad de suscripción mensual puedes cancelar tu renovación en cualquier momento sin compromiso de permanencia.</p>'
+      };
+      document.getElementById('legalModalTitle').textContent = titles[type] || 'Información Legal';
+      document.getElementById('legalModalBody').innerHTML = bodies[type] || '';
+      document.getElementById('legalModal').classList.remove('hidden');
+    }
+
+    function closeLegalModal() {
+      document.getElementById('legalModal').classList.add('hidden');
+    }
+
+    function setFreeTimer(sec) {
+      clearInterval(freeTimerInt);
+      freeTimerRunning = false;
+      freeTimerTotal = sec;
+      freeTimerSec = sec;
+      document.getElementById('freeTimerClock').textContent = formatClock(sec);
+      document.getElementById('freeTimerBar').style.width = '100%';
+      document.getElementById('freeTimerStartBtn').textContent = '▶ Iniciar';
+    }
+
+    function resetFreeTimer() {
+      setFreeTimer(freeTimerTotal);
+    }
+
+    function toggleFreeTimer() {
+      const btn = document.getElementById('freeTimerStartBtn');
+      if (freeTimerRunning) {
+        clearInterval(freeTimerInt);
+        freeTimerRunning = false;
+        btn.textContent = '▶ Reanudar';
+        return;
+      }
+      if (freeTimerSec <= 0) {
+        freeTimerSec = freeTimerTotal;
+        document.getElementById('freeTimerBar').style.width = '100%';
+      }
+      freeTimerRunning = true;
+      btn.textContent = '⏸ Pausar';
+      freeTimerInt = setInterval(() => {
+        freeTimerSec--;
+        const safeSec = Math.max(0, freeTimerSec);
+        document.getElementById('freeTimerClock').textContent = formatClock(safeSec);
+        document.getElementById('freeTimerBar').style.width = `${(safeSec / freeTimerTotal) * 100}%`;
+        if (freeTimerSec <= 0) {
+          clearInterval(freeTimerInt);
+          freeTimerRunning = false;
+          btn.textContent = '▶ Iniciar';
+          playGentleBeep();
+          showToast('⏱ ¡Tiempo completado! Pasa al siguiente bloque o lado.');
+        }
+      }, 1000);
+    }
+
+    function switchLandingSyllabusTab(tab) {
+      landingSyllabusTab = tab;
+      ['reto', 'club', 'comodines'].forEach(t => {
+        const btn = document.getElementById(`sylTab-${t}`);
+        if (t === tab) {
+          btn.className = 'syl-tab px-5 py-3 rounded-2xl font-display font-extrabold text-xs sm:text-sm bg-brand-navy text-white shadow cursor-pointer transition';
+        } else {
+          btn.className = 'syl-tab px-5 py-3 rounded-2xl font-display font-extrabold text-xs sm:text-sm bg-slate-100 text-slate-600 hover:bg-slate-200 cursor-pointer transition';
+        }
+      });
+      renderLandingSyllabus();
+    }
+
+    function renderLandingSyllabus() {
+      const container = document.getElementById('landingSyllabusContent');
+      if (landingSyllabusTab === 'reto') {
+        const weeks = [1, 2, 3, 4];
+        container.innerHTML = `
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
+            ${weeks.map(w => {
+              const items = RETO_30_DAYS.filter(d => d.week === w);
+              return `
+                <div class="bg-white rounded-2xl border border-slate-200 p-5">
+                  <div class="flex items-center justify-between mb-3 pb-2 border-b border-slate-100">
+                    <h3 class="font-display font-extrabold text-sm text-brand-navy">${items[0].weekName}</h3>
+                    <span class="text-[11px] font-bold text-brand-orange bg-orange-50 px-2.5 py-0.5 rounded-lg">${items[0].duration}</span>
+                  </div>
+                  <ul class="space-y-2 text-xs text-slate-600">
+                    ${items.map(d => `
+                      <li class="flex items-start gap-2">
+                        <span class="font-display font-extrabold text-brand-navy shrink-0">Día ${d.day}:</span>
+                        <span>${d.title}</span>
+                      </li>
+                    `).join('')}
+                  </ul>
+                </div>
+              `;
+            }).join('')}
+          </div>
+        `;
+      } else if (landingSyllabusTab === 'club') {
+        container.innerHTML = `
+          <div class="space-y-4">
+            <div class="flex flex-wrap items-center justify-between gap-2 pb-2 border-b border-slate-200">
+              <p class="text-xs sm:text-sm font-bold text-brand-navy">Plan Anual Completo: 12 Meses estructurados en 4 Trimestres</p>
+              <span class="text-xs font-display font-extrabold text-brand-orange">Mes 1 (Reto 30D) + Meses 2 al 12 (Club)</span>
+            </div>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+              <div class="bg-white rounded-2xl border-2 border-brand-orange p-4">
+                <span class="inline-block px-2 py-0.5 rounded bg-orange-50 text-brand-orangeDark font-display font-extrabold text-[10px]">MES 1 · TRIMESTRE 1</span>
+                <h4 class="font-display font-extrabold text-sm text-brand-navy mt-1">Reto 30 Días: Movilidad y Postura</h4>
+                <p class="text-xs text-slate-600 mt-1">30 sesiones progresivas (8–15 min) para cuello, espalda, cadera, lumbar y tobillos.</p>
+              </div>
+              ${CLUB_ANNUAL_THEMES.map(m => `
+                <div class="bg-white rounded-2xl border border-slate-200 p-4">
+                  <span class="inline-block px-2 py-0.5 rounded bg-slate-100 text-brand-navy font-display font-extrabold text-[10px]">MES ${m.month} · ${m.quarter.toUpperCase()}</span>
+                  <h4 class="font-display font-extrabold text-sm text-brand-navy mt-1">${m.shortLabel}</h4>
+                  <p class="text-xs text-slate-600 mt-1">${m.subtitle}</p>
+                </div>
+              `).join('')}
+            </div>
+          </div>
+        `;
+      } else {
+        container.innerHTML = `
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div class="bg-white rounded-2xl border border-slate-200 p-5">
+              <span class="inline-block px-2.5 py-1 rounded-lg bg-orange-50 text-brand-orangeDark font-display font-extrabold text-[11px] mb-2">COMODÍN 01 · 7 MINUTOS</span>
+              <h3 class="font-display font-black text-lg text-brand-navy mb-2">Modo "Día malo / Cero ganas"</h3>
+              <p class="text-xs text-slate-600 leading-relaxed">
+                3 movimientos suaves (descarga cervical, rotación lumbar tumbado y gato-camello) para los días en los que llegas agotado pero quieres mantener tu racha viva sin exigirte de más.
+              </p>
+            </div>
+            <div class="bg-white rounded-2xl border border-slate-200 p-5">
+              <span class="inline-block px-2.5 py-1 rounded-lg bg-slate-100 text-brand-navy font-display font-extrabold text-[11px] mb-2">COMODÍN 02 · 10 MINUTOS DE PIE</span>
+              <h3 class="font-display font-black text-lg text-brand-navy mb-2">Modo "Viaje / Fuera de casa"</h3>
+              <p class="text-xs text-slate-600 leading-relaxed">
+                Rutina 100% de pie sin necesidad de esterilla ni suelo (apertura torácica en pared, dorsiflexión de tobillo y sentadilla controlada) para hoteles, oficina o viajes.
+              </p>
+            </div>
+          </div>
+        `;
+      }
+    }
+
+    function renderClubMonthsSelector() {
+      const selector = document.getElementById('clubMonthsSelector');
+      if (!selector) return;
+      selector.innerHTML = CLUB_ANNUAL_THEMES.map(m => {
+        const active = m.month === selectedClubMonth;
+        return `
+          <button type="button" onclick="selectClubMonth(${m.month})" class="px-3 py-2 rounded-xl font-display font-extrabold text-xs text-left transition cursor-pointer border ${active ? 'bg-brand-navy text-white border-brand-navy shadow-sm' : 'bg-slate-50 text-slate-700 border-slate-200 hover:border-brand-orange'}">
+            <span class="block text-[10px] ${active ? 'text-brand-orange' : 'text-slate-400'}">${m.quarter}</span>
+            <span class="truncate block">${m.shortLabel}</span>
+          </button>
+        `;
+      }).join('');
+    }
+
+    function selectClubMonth(monthNum) {
+      selectedClubMonth = monthNum;
+      renderClubMonthsSelector();
+      renderClubMonth();
+    }
+
+    function renderClubMonth() {
+      renderClubMonthsSelector();
+      const data = getClubMonthStructured(selectedClubMonth);
+      const container = document.getElementById('clubMonthContainer');
+      if (!container) return;
+
+      container.innerHTML = `
+        <div class="mb-6 flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+          <div>
+            <span class="inline-block px-2.5 py-0.5 rounded-md bg-orange-50 text-brand-orangeDark font-display font-extrabold text-[11px] mb-1">${data.quarter}</span>
+            <h3 class="font-display font-black text-xl text-brand-navy">${data.title}</h3>
+            <p class="text-xs sm:text-sm text-slate-500 mt-1">${data.subtitle}</p>
+          </div>
+          <div class="flex items-center gap-2 shrink-0">
+            <button type="button" onclick="selectClubMonth(Math.max(2, selectedClubMonth - 1))" class="px-3 py-2 rounded-xl bg-slate-100 hover:bg-slate-200 text-xs font-bold text-slate-700 cursor-pointer">← Mes ant.</button>
+            <button type="button" onclick="selectClubMonth(Math.min(12, selectedClubMonth + 1))" class="px-3 py-2 rounded-xl bg-slate-100 hover:bg-slate-200 text-xs font-bold text-slate-700 cursor-pointer">Mes sig. →</button>
+          </div>
+        </div>
+        <div class="space-y-6">
+          ${data.weeks.map(w => `
+            <div class="rounded-2xl bg-brand-surface border border-slate-200 p-4 sm:p-5">
+              <h4 class="font-display font-extrabold text-sm text-brand-navy mb-3">${w.weekTitle}</h4>
+              <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                ${w.sessions.map(s => {
+                  const done = !!clubCompleted[s.id];
+                  return `
+                    <div class="bg-white rounded-2xl border ${done ? 'border-emerald-400' : 'border-slate-200'} p-4 flex flex-col justify-between gap-3">
+                      <div>
+                        <div class="flex items-center justify-between mb-2">
+                          <span class="px-2 py-0.5 rounded-md bg-orange-50 text-brand-orangeDark font-display font-extrabold text-[10px] uppercase">${s.dayLabel}</span>
+                          ${done ? '<span class="text-[11px] font-bold text-emerald-600">✓ Completado</span>' : ''}
+                        </div>
+                        <div class="mb-2.5">
+                          ${renderClipPlayerHTML(s.clipId, true, s.name)}
+                        </div>
+                        <p class="font-display font-extrabold text-sm text-brand-navy mb-1">${s.name}</p>
+                        <p class="text-xs text-slate-600 leading-relaxed mb-2">${s.desc}</p>
+                        <p class="text-[11px] text-amber-800 bg-amber-50 px-2.5 py-1.5 rounded-lg mb-1"><strong>Evita:</strong> ${s.error}</p>
+                        <p class="text-[11px] text-blue-900 bg-blue-50 px-2.5 py-1.5 rounded-lg"><strong>Fácil:</strong> ${s.easy}</p>
+                      </div>
+                      <button type="button" onclick="toggleClubSession('${s.id}')" class="w-full py-2 rounded-xl font-display font-extrabold text-xs cursor-pointer transition ${done ? 'bg-emerald-600 text-white' : 'bg-slate-100 hover:bg-brand-navy hover:text-white text-slate-700'}">
+                        ${done ? '✓ Sesión Hecha' : 'Marcar como hecha'}
+                      </button>
+                    </div>
+                  `;
+                }).join('')}
+              </div>
+            </div>
+          `).join('')}
+        </div>
+      `;
+    }
+
+    function toggleClubSession(id) {
+      if (clubCompleted[id]) {
+        delete clubCompleted[id];
+      } else {
+        clubCompleted[id] = true;
+        showToast('✓ Sesión del Club guardada en la nube.');
+      }
+      localStorage.setItem(STORAGE_KEYS.clubCompleted, JSON.stringify(clubCompleted));
+      syncProgressToSupabase();
+      renderClubMonth();
+    }
+
+    function completeComodin(key) {
+      clubCompleted[key] = !clubCompleted[key];
+      localStorage.setItem(STORAGE_KEYS.clubCompleted, JSON.stringify(clubCompleted));
+      syncProgressToSupabase();
+      const btn = document.getElementById(`btn-${key}`);
+      if (clubCompleted[key]) {
+        btn.textContent = '✓ ¡Racha mantenida hoy!';
+        btn.className = 'w-full py-3.5 rounded-2xl bg-emerald-600 text-white font-display font-extrabold text-xs sm:text-sm cursor-pointer transition';
+        showToast('🔥 ¡Comodín completado! Racha salvada.');
+      } else {
+        btn.textContent = key === 'comodin7' ? '✓ Marcar Comodín 7 min Completado Hoy' : '✓ Marcar Comodín Viaje 10 min Completado';
+        btn.className = 'w-full py-3.5 rounded-2xl bg-brand-navy hover:bg-brand-navyLight text-white font-display font-extrabold text-xs sm:text-sm cursor-pointer transition';
+      }
+    }
+
+    function setLibraryZone(zone) {
+      selectedLibraryZone = zone;
+      document.querySelectorAll('.lib-zone-btn').forEach(btn => {
+        if (btn.textContent.trim() === zone) {
+          btn.className = 'lib-zone-btn px-3.5 py-1.5 rounded-xl text-xs font-display font-extrabold bg-brand-navy text-white cursor-pointer';
+        } else {
+          btn.className = 'lib-zone-btn px-3.5 py-1.5 rounded-xl text-xs font-display font-extrabold bg-slate-100 text-slate-600 hover:bg-slate-200 cursor-pointer';
+        }
+      });
+      renderLibraryGrid();
+    }
+
+    function renderLibraryGrid() {
+      const query = (document.getElementById('librarySearchInput').value || '').toLowerCase().trim();
+      const grid = document.getElementById('libraryGrid');
+
+      const filtered = MOVEMENTS_LIBRARY.filter(m => {
+        const matchZone = selectedLibraryZone === 'Todos' || m.zone === selectedLibraryZone;
+        const matchText = !query || m.name.toLowerCase().includes(query) || m.desc.toLowerCase().includes(query) || m.zone.toLowerCase().includes(query);
+        return matchZone && matchText;
+      });
+
+      if (!filtered.length) {
+        grid.innerHTML = `<div class="col-span-full text-center py-8 text-sm text-slate-500">No se encontraron movimientos con ese filtro.</div>`;
+        return;
+      }
+
+      grid.innerHTML = filtered.map(m => `
+        <div class="rounded-2xl bg-brand-surface border border-slate-200 p-4 flex flex-col justify-between gap-3">
+          <div>
+            <div class="flex items-center justify-between gap-2 mb-2">
+              <span class="px-2.5 py-0.5 rounded-md bg-white border border-slate-200 text-[10px] font-display font-extrabold text-brand-navy">${m.zone}</span>
+              <span class="text-[10px] font-bold text-brand-orange">Clip 20–35s</span>
+            </div>
+            <div class="mb-3">
+              ${renderClipPlayerHTML(m.svgKey, true)}
+            </div>
+            <h4 class="font-display font-extrabold text-sm text-brand-navy mb-1">${m.name}</h4>
+            <p class="text-xs text-slate-600 leading-relaxed">${m.desc}</p>
+          </div>
+          <div class="pt-2 border-t border-slate-200 text-[11px] font-semibold text-slate-500">
+            <strong>Se usa en:</strong> ${m.usedIn}
+          </div>
+        </div>
+      `).join('');
+    }
+
+    window.addEventListener('DOMContentLoaded', async () => {
+      startAlexClipEngine();
+      selectFreeTrialDay(1);
+      applyFreeTrialUnlockUI();
+      renderLandingSyllabus();
+      updateGlobalStreakUI();
+      updateHeaderSessionIndicator();
+      captureUtmAndReturnParams();
+
+      // Recuperar sesión activa de Supabase al cargar la página
+      const { data: { session } } = await supabaseClient.auth.getSession();
+      if (session && session.user) {
+        await syncProgressFromSupabase(session.user);
+      }
+
+      if (new URLSearchParams(window.location.search).get('admin') === '1') {
+        openCreatorConfigModal();
+      }
+    });
+  </script>
+</body>
+</html>
