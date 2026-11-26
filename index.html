@@ -930,7 +930,7 @@
         <div class="max-w-sm mx-auto">
           <h4 class="font-display font-black text-lg text-brand-navy">Zona Privada de Creadores</h4>
           <p class="text-xs text-slate-600 mt-1">
-            Introduce vuestro PIN de equipo (por defecto <code class="px-1.5 py-0.5 rounded bg-slate-100 font-bold text-brand-navy">3030</code>, puedes cambiarlo dentro) para gestionar los 16 vídeos y enlaces de cobro.
+            Introduce vuestro PIN de equipo (<code class="px-1.5 py-0.5 rounded bg-slate-100 font-bold text-brand-navy"></code>, puedes cambiarlo dentro) para gestionar los 16 vídeos y enlaces de cobro.
           </p>
         </div>
         <form onsubmit="unlockCreatorPanel(event)" class="max-w-xs mx-auto flex gap-2">
@@ -1225,8 +1225,8 @@
     };
 
     const ADMIN_PIN_STORAGE = 'm30d_creator_pin_v1';
-    const DEFAULT_CREATOR_PIN = '3030';
-    let creatorPanelUnlocked = true;
+    const DEFAULT_CREATOR_PIN = '1312';
+    let creatorPanelUnlocked = false;
 
     const ADMIN_CLIPS_CATALOG = [
       {
