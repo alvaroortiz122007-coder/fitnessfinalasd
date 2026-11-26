@@ -1170,7 +1170,6 @@
         .from('perfiles_alumnos')
         .upsert({
           id: currentSupabaseUser.id,
-          plan_activo: activePlan,
           dias_completados: completedDays,
           club_completado: clubCompleted
         });
@@ -2230,26 +2229,20 @@
         localStorage.setItem(STORAGE_KEYS.utmParams, JSON.stringify(storedUtm));
       }
 
-      const acceso = (params.get('acceso') || '').toLowerCase();
-      if (acceso) {
-        const planMap = {
-          reto30: 'Reto 30 Días · Movilidad y Postura',
-          pack: 'Pack Completo: Reto 30 Días + Plan Anual Club',
-          packcompleto: 'Pack Completo: Reto 30 Días + Plan Anual Club',
-          club: 'Club Mensual 30D (Plan Anual)'
-        };
-        activePlan = planMap[acceso] || 'Acceso Completo · Método 30D';
-        hasUnlockedAccess = true;
-        localStorage.setItem(STORAGE_KEYS.activePlan, activePlan);
-        localStorage.setItem(STORAGE_KEYS.hasUnlockedAccess, 'true');
-        syncProgressToSupabase();
-
+      // Al volver de Stripe, solo notificamos y limpiamos la URL (el plan real viene de Supabase)
+      if (params.get('acceso') || params.get('pago') === 'ok') {
         if (window.history && window.history.replaceState) {
           window.history.replaceState({}, document.title, window.location.pathname);
         }
-        updateHeaderSessionIndicator();
-        switchAppView('student');
-        showToast(`🎉 ¡Bienvenido! Acceso activado: ${activePlan}`);
+        if (currentSupabaseUser) {
+          syncProgressFromSupabase(currentSupabaseUser).then(() => {
+            switchAppView('student');
+            showToast('🎉 ¡Pago recibido! Sincronizando tu acceso con tu perfil...');
+          });
+        } else {
+          openStudentAuthModal();
+          showToast('🎉 ¡Pago recibido! Inicia sesión con tu correo para entrar a tu área.');
+        }
       }
     }
 
